@@ -1,0 +1,58 @@
+# See: https://github.com/CIME-Software/perplexipy/blob/master/LICENSE.txt
+
+[build-system]
+requires = [ 'setuptools' ]
+build-backend = 'setuptools.build_meta'
+
+
+[metadata]
+url = 'https://github.com/CIME-Software/perplexipy'
+
+
+[project]
+authors = [
+    { name = 'CIME Software Ltd', email = 'perplexipy@cime.net' }
+]
+classifiers = [
+    'Development Status :: 4 - Beta',
+    'Intended Audience :: Developers',
+    'License :: OSI Approved :: BSD License',
+    'Operating System :: OS Independent',
+    'Programming Language :: Python :: 3',
+    'Programming Language :: Python :: 3.9',
+    'Topic :: Scientific/Engineering :: Artificial Intelligence',
+    'Topic :: Software Development :: Libraries :: Python Modules',
+]
+description = 'perplexipy - A robust Perplexity AI API client'
+dynamic = [
+    'dependencies',
+    'version',
+]
+name = 'perplexipy'
+readme = 'README.md'
+requires-python = '>=3.9'
+
+
+# [project.scripts]
+# perplexipy = 'perplexipy:main'
+
+
+[tool.pytest.ini_options]
+addopts = '-sv'
+testpaths = [
+    'tests'
+]
+
+
+[tool.setuptools]
+include-package-data = true
+packages = [
+    'perplexipy',
+    # 'tests', # because test modules import objects from other test modules
+]
+
+
+[tool.setuptools.dynamic]
+dependencies = { file = 'requirements.txt' }
+version = { attr = 'perplexipy.__VERSION__' }
+
