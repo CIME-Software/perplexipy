@@ -1,0 +1,4 @@
+devpi-client
+ptpython
+pudb
+pytest
