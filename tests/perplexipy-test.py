@@ -14,5 +14,3 @@ def test_PerplexityClient():
     with pytest.raises(PerplexityClientError):
         PerplexityClient('xxxx')
 
-
-
