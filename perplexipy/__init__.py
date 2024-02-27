@@ -1,14 +1,20 @@
 # See: https://github.com/CIME-Software/perplexipy/blob/master/LICENSE.txt
 
 
-__VERSION__ = '0.0.2'
+__VERSION__ = '0.0.3'
 
+
+from dotenv import load_dotenv
+from openai import OpenAI
+
+load_dotenv()
 
 import os
 
-import requests
 
 
+DEFAULT_PERPLEXITY_MODEL = 'mistral-7b-instruct'
+DEFAULT_PERPLEXITY_ROLE = 'user'
 """
 `PERPLEXITY_API_KEY` is set to the environment variable of the same name if
 present, otherwise it's set to the empty string `''`.
@@ -45,9 +51,14 @@ class PerplexityClient:
 
         Returns
         -------
-        An instance of `perplexipy.PerplexityClient` if successful.  The
-        API service endpoint isn't validated until the first call to get a
-        response.
+        An instance of `perplexipy.PerplexityClient` if successful.
+
+        Attributes:
+
+        `model` - the current model to use in queries, user configurable.
+
+        The role is fixed to `"user"` for Perplexity calls, per the API
+        recommendations.
 
         Raises
         ------
@@ -60,6 +71,43 @@ class PerplexityClient:
         if not 'pplx-' in key:
             raise PerplexityClientError('The key %s i missing the pplx- prefix - invalid API key')
 
-        self._key = key
         self._endpoint = endpoint
+        self._key = key
+        self._role = DEFAULT_PERPLEXITY_ROLE
+        self.model = DEFAULT_PERPLEXITY_MODEL
+        self._client = OpenAI(api_key = self._key, base_url = self._endpoint)
+
+
+    def query(self, query):
+        """
+        Send a single message query to the service, receive a single response.
+
+        Arguments
+        ---------
+            query
+        A string with the query in one of the model's supported languages.
+
+        Returns
+        -------
+        A string with a response from the Perplexity service.
+
+        Raises
+        ------
+            Exception
+        An `openai.BadRequestError` or similar if the query is malformed or has
+        something other than text data.  The error raised passes through
+        whatever the API raised.
+
+        In most cases, the API returns `openai.BadRequestError`.
+        """
+        messages = [ { 'role': self._role, 'content': query, }, ]
+
+        response = self._client.chat.completions.create(
+            model = self.model,
+            messages = messages,
+        )
+
+        result = response.choices[0].message.content
+
+        return result
 
