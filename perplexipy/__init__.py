@@ -1,7 +1,7 @@
 # See: https://github.com/CIME-Software/perplexipy/blob/master/LICENSE.txt
 
 
-__VERSION__ = '0.0.3'
+__VERSION__ = '0.0.4'
 
 
 from dotenv import load_dotenv
@@ -13,8 +13,8 @@ import os
 
 
 
-DEFAULT_PERPLEXITY_MODEL = 'mistral-7b-instruct'
-DEFAULT_PERPLEXITY_ROLE = 'user'
+PERPLEXITY_DEFAULT_MODEL = 'mistral-7b-instruct'
+PERPLEXITY_DEFAULT_ROLE = 'user'
 """
 `PERPLEXITY_API_KEY` is set to the environment variable of the same name if
 present, otherwise it's set to the empty string `''`.
@@ -73,8 +73,8 @@ class PerplexityClient:
 
         self._endpoint = endpoint
         self._key = key
-        self._role = DEFAULT_PERPLEXITY_ROLE
-        self.model = DEFAULT_PERPLEXITY_MODEL
+        self._role = PERPLEXITY_DEFAULT_ROLE
+        self.model = PERPLEXITY_DEFAULT_MODEL
         self._client = OpenAI(api_key = self._key, base_url = self._endpoint)
 
 
