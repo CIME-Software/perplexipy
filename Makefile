@@ -1,4 +1,4 @@
-# See:  https://raw.githubusercontent.com/pr3d4t0r/m0toko/master/LICENSE.txt
+# See: https://github.com/CIME-Software/perplexipy/blob/master/LICENSE.txt
 
 
 SHELL=/bin/bash
