@@ -1,4 +1,6 @@
 devpi-client
+pdoc
 ptpython
 pudb
+pylint
 pytest

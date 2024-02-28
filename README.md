@@ -1,4 +1,4 @@
-% perplexipy(3) Version 0.0.6 | Perplexity AI high level API documentation
+% perplexipy(3) Version 0.0.7 | Perplexity AI high level API documentation
 
 Name
 ====
@@ -27,6 +27,13 @@ this library occurs in the form of string and native Python objects.
 **perplexipy** is implemented from a combination of the Perplexity AI and the
 OpenAI documentation.  API semantics follow the "literate programming" workflow,
 and attempt to make the resulting code as simple to follow as possible.
+
+<a href='https://www.perplexity.ai/' target='_blank'>Perplexity AI</a> is an
+AI-powered search engine that uses natural language
+processing and machine learning to provide accurate and comprehensive answers to
+end-user queries.  It can be argued that it outperforms OpenAI's offerings in
+accuracy and responsiveness.  **perplexypi** enables the creation of Python
+programs and tools that leverage the power of Perplexity AI.
 
 
 Documentation
@@ -123,10 +130,16 @@ Async usage
 Not supported at this time.
 
 
+License
+=======
+The **perplexipy** package, documentation and examples are licensed under the
+[BSD-3 open source license](https://github.com/CIME-Software/perplexipy/blob/master/LICENSE.txt).
+
+
 See also
 ========
-- **openai** - https://pipy.org/project/openai
-- https://www.perplexity.ai/
+- PyPI:  <a href='https://pipy.org/project/openai' target='_blank'>openai</a>
+- <a href='https://www.perplexity.ai/' target='_blank'>Perplexity AI</a>
 
 
 Caveats
