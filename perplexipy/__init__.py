@@ -1,8 +1,10 @@
 # See: https://github.com/CIME-Software/perplexipy/blob/master/LICENSE.txt
 
 
-__VERSION__ = '0.0.5'
+__VERSION__ = '0.0.6'
 
+
+from collections import namedtuple
 
 from dotenv import load_dotenv
 from openai import OpenAI
@@ -59,6 +61,13 @@ class Responses:
         return result
 
 
+"""
+Immutable dictionary-like object of a model's capabilities.  Use `_asDict()` if
+dictionary manipulation is required.
+"""
+ModelInfo = namedtuple('ModelInfo', [ 'parameterCount', 'contextLength', 'modelType', 'availability', ])
+
+
 class PerplexityClient:
     """
     PerplexityClient objects encapsulate all the API functionality.  They can be
@@ -102,7 +111,7 @@ class PerplexityClient:
         self._endpoint = endpoint
         self._key = key
         self._role = PERPLEXITY_DEFAULT_ROLE
-        self.model = PERPLEXITY_DEFAULT_MODEL
+        self._model = PERPLEXITY_DEFAULT_MODEL
         self._client = OpenAI(
             api_key = self._key,
             base_url = self._endpoint,
@@ -229,4 +238,50 @@ class PerplexityClient:
         )
 
         return Responses(response)
+
+
+    @property
+    def models(self):
+        """
+        Provide a dictionary of the models supported by Perplexity listed in:
+
+        https://docs.perplexity.ai/docs/model-cards
+
+        Returns
+        -------
+        A dictionary of supported models as the key, with a `perplexypy.ModelInfo`
+        named tuple with the model capabilities description.  The model
+        information attributes are:
+
+        - `parameterCount`
+        - `contextLength`
+        - `modelType`
+        - `availability`
+        """
+        supportedModels = {
+            'codellama-70b-instruct': ModelInfo('70B', 16384, 'chat completion', 'open source',),
+            'mistral-7b-instruct': ModelInfo('7B', 16384, 'chat completion', 'open source',),
+            'mixtral-8x7b-instruct': ModelInfo('8x7B', 16384, 'chat completion', 'open source',),
+            'sonar-medium-chat': ModelInfo('8x7B', 16348, 'chat completion', 'Perplexity',),
+            'sonar-medium-online': ModelInfo('8x7B', 12000, 'chat completion', 'Perplexity',),
+            'sonar-small-chat': ModelInfo('7B', 16384, 'chat completion', 'Perplexity',),
+            'sonar-small-online': ModelInfo('7B', 12000, 'chat completion', 'Perplexity',),
+        }
+
+        return supportedModels
+
+
+    @property
+    def model(self) -> str:
+        return self._model
+
+    @model.setter
+    def model(self, value: str):
+        """
+        """
+        models = self.models.keys()
+        if value not in models:
+            raise PerplexityClientError('value = %s error; supported models: %s' % (value, ', '.join(models)))
+
+        self._model = value
 
