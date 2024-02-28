@@ -2,6 +2,7 @@
 
 from perplexipy import PerplexityClient
 from perplexipy import PerplexityClientError
+from perplexipy import Responses
 
 import pytest
 
@@ -10,6 +11,7 @@ import pytest
 
 TEST_BOGUS_MODEL = 'bogus-llm-1b'
 TEST_QUERY = 'Brief answer to the ultimate question about life, the Universe, and everything?'
+TEST_QUERY_LONG = 'Give me a comprehensive list of US presidents.'
 
 
 # +++ globals +++
@@ -57,6 +59,28 @@ def test_PerplexityClient_bogusModel(testClient):
     result = testClient.query(TEST_QUERY)
     assert result
 
+
+def test_PerplexityClient_queryBatch(testClient):
+    result = testClient.queryBatch(TEST_QUERY)
+    assert isinstance(result, tuple)
+    assert isinstance(result[0], str)
+
+
+def test_PerplexityClient_queryStreamable(testClient):
+    t = ''
+    results = testClient.queryStreamable(TEST_QUERY_LONG)
+    assert isinstance(results, Responses)
+    for result in results:
+        assert isinstance(result, str)
+        t += result
+    assert len(t)
+
+    with pytest.raises(PerplexityClientError):
+        testClient.queryStreamable('')
+    with pytest.raises(PerplexityClientError):
+        testClient.queryStreamable(None)
+
+
 # _testClient = PerplexityClient()
-# test_PerplexityClient_bogusModel(_testClient)
+# test_PerplexityClient_queryStreamable(_testClient)
 
