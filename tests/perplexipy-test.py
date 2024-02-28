@@ -50,14 +50,8 @@ def test_PerplexityClient_query(testClient):
 
 
 def test_PerplexityClient_bogusModel(testClient):
-    model = testClient.model
-    testClient.model = TEST_BOGUS_MODEL
     with pytest.raises(Exception):
-        testClient.query(TEST_QUERY)
-
-    testClient.model = model
-    result = testClient.query(TEST_QUERY)
-    assert result
+        testClient.model = TEST_BOGUS_MODEL
 
 
 def test_PerplexityClient_queryBatch(testClient):
@@ -81,6 +75,13 @@ def test_PerplexityClient_queryStreamable(testClient):
         testClient.queryStreamable(None)
 
 
+def test_PerplexityClient_models(testClient):
+    model = testClient.model
+    models = testClient.models
+    assert isinstance(models, dict)
+    assert model in models.keys()
+
+
 # _testClient = PerplexityClient()
-# test_PerplexityClient_queryStreamable(_testClient)
+# test_PerplexityClient_bogusModel(_testClient)
 
