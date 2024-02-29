@@ -10,7 +10,7 @@
 """
 
 
-__VERSION__ = '0.0.7'
+__VERSION__ = '0.0.8'
 
 
 from collections import namedtuple
@@ -40,6 +40,7 @@ performance qualities.  Ref:  https://arxiv.org/abs/2310.06825
 PERPLEXITY_DEFAULT_MODEL = 'mistral-7b-instruct'
 PERPLEXITY_DEFAULT_ROLE = 'user'
 PERPLEXITY_TIMEOUT = 30.0 # seconds
+PERPLEXITY_VALID_ROLES = { 'assistant', 'system', 'user', } # future proofing.
 
 
 """

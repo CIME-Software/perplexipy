@@ -1,4 +1,4 @@
-% perplexipy(3) Version 0.0.7 | Perplexity AI high level API documentation
+% perplexipy(3) Version 0.0.8 | Perplexity AI high level API documentation
 
 Name
 ====
@@ -33,7 +33,7 @@ and attempt to make the resulting code as simple to follow as possible.
 AI-powered search engine that uses natural language
 processing and machine learning to provide accurate and comprehensive answers to
 end-user queries.  It can be argued that it outperforms OpenAI's offerings in
-accuracy and responsiveness.  **perplexypi** enables the creation of Python
+accuracy and responsiveness.  **perplexipy** enables the creation of Python
 programs and tools that leverage the power of Perplexity AI.
 
 
