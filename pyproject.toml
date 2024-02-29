@@ -28,6 +28,7 @@ dynamic = [
     'dependencies',
     'version',
 ]
+license = { text='BSD-3' }
 name = 'perplexipy'
 readme = 'README.md'
 requires-python = '>=3.9'
@@ -35,6 +36,13 @@ requires-python = '>=3.9'
 
 # [project.scripts]
 # perplexipy = 'perplexipy:main'
+
+
+[project.urls]
+homepage = 'https://cime-software.github.io/perplexipy/'
+Documentation = 'https://cime-software.github.io/perplexipy/'
+'Bug Tracker' = 'https://github.com/CIME-Software/perplexipy/issues'
+Source = 'https://github.com/CIME-Software/perplexipy'
 
 
 [tool.pytest.ini_options]
@@ -50,7 +58,6 @@ packages = [
     'perplexipy',
     # 'tests', # because test modules import objects from other test modules
 ]
-
 
 [tool.setuptools.dynamic]
 dependencies = { file = 'requirements.txt' }
