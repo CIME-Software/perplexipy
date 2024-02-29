@@ -10,7 +10,7 @@
 """
 
 
-__VERSION__ = '0.0.9'
+__VERSION__ = '0.1.0'
 
 
 from collections import namedtuple
@@ -262,7 +262,7 @@ class PerplexityClient:
     def model(self, value: str):
         """
         """
-        models = self.models.keys()
+        models = self.models
         if value not in models:
             raise PerplexityClientError('value = %s error; supported models: %s' % (value, ', '.join(models)))
 
