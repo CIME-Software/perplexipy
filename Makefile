@@ -3,6 +3,7 @@
 
 SHELL=/bin/bash
 
+API_DOC_DIR="./docs"
 BUILD=./build
 DEVPI_HOST=$(shell cat devpi-hostname.txt)
 DEVPI_PASSWORD=$(shell cat ./devpi-password.txt)
@@ -19,6 +20,7 @@ VERSION=$(shell echo "from $(PACKAGE) import __VERSION__; print(__VERSION__)" | 
 all: ALWAYS
 	make test
 	make manpage
+	make docs
 	make package
 
 
@@ -30,6 +32,7 @@ clean:
 	rm -Rfv $$(find tests | awk '/__pycache__$$/')
 	rm -Rfv $$(find . | awk '/.ipynb_checkpoints/')
 	rm -Rfv ./.pytest_cache
+	rm -Rf $(API_DOC_DIR)/*
 	mkdir -p ./dist
 	pushd ./dist ; pip uninstall -y $(PACKAGE)==$(VERSION) || true ; popd
 
@@ -40,6 +43,13 @@ devpi:
 	devpi use $(DEVPI_USER)/dev
 	devpi -v use --set-cfg $(DEVPI_USER)/dev
 	@[[ -e "pip.conf-bak" ]] && rm -f "pip.conf-bak"
+
+
+docs: ALWAYS
+	mkdir -p $(API_DOC_DIR)
+	@[[ -e ".env" ]] && mv ".env" "_env"
+	VERSION="$(VERSION)" pdoc --logo="https://images2.imgbox.com/57/94/AsI1WSfy_o.png" --favicon="https://cime.net/upload_area/favicon.ico" -n -o $(API_DOC_DIR) -t ./resources $(PACKAGE)
+	@[[ -e "_env" ]] && mv "_env" ".env"
 
 
 install:
@@ -96,6 +106,8 @@ test: ALWAYS
 	@echo "Version = $(VERSION)"
 	@make local
 	pytest -v ./tests/$(PACKAGE)-test.py
+	pytest -v ./tests/errors-test.py
+	pytest -v ./tests/responses-test.py
 	pip uninstall -y $(PACKAGE)==$(VERSION) || true
 	rm -Rfv $$(find $(PACKAGE)/ | awk '/__pycache__$$/')
 	rm -Rfv $$(find tests | awk '/__pycache__$$/')

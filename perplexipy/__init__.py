@@ -1,13 +1,25 @@
 # See: https://github.com/CIME-Software/perplexipy/blob/master/LICENSE.txt
 
 
-__VERSION__ = '0.0.6'
+"""
+.. include:: ../README.md
+
+---
+
+# perplexipy API Documentation
+"""
+
+
+__VERSION__ = '0.0.7'
 
 
 from collections import namedtuple
 
 from dotenv import load_dotenv
 from openai import OpenAI
+
+from perplexipy.errors import PerplexityClientError
+from perplexipy.responses import Responses
 
 load_dotenv()
 
@@ -28,37 +40,6 @@ performance qualities.  Ref:  https://arxiv.org/abs/2310.06825
 PERPLEXITY_DEFAULT_MODEL = 'mistral-7b-instruct'
 PERPLEXITY_DEFAULT_ROLE = 'user'
 PERPLEXITY_TIMEOUT = 30.0 # seconds
-
-
-class PerplexityClientError(Exception):
-    """
-    Perplexity client generic errors, for cleaner exception handling.
-    """
-    def __init__(self, errorMessage):
-        super().__init__(errorMessage)
-
-
-class Responses:
-    """
-    Encapsulates all the streaming responses from a query and enables access to
-    it using a purpose-built iterable.  Strips all the OpenAI response metadata
-    and returns only the textual response.  It's a streaming iterable,
-    open-ended.
-    """
-    def __init__(self, responsesStream):
-        self._responsesStream = responsesStream
-
-
-    def __iter__(self):
-        return self
-
-
-    def __next__(self):
-        try:
-            result = self._responsesStream.__next__().choices[0].delta.content
-        except Exception as e:
-            raise e
-        return result
 
 
 """

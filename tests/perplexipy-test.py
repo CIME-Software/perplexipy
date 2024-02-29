@@ -1,8 +1,8 @@
 # See: https://github.com/CIME-Software/perplexipy/blob/master/LICENSE.txt
 
 from perplexipy import PerplexityClient
-from perplexipy import PerplexityClientError
-from perplexipy import Responses
+from perplexipy.errors import PerplexityClientError
+from perplexipy.responses import Responses
 
 import pytest
 
