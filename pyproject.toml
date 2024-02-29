@@ -23,13 +23,13 @@ classifiers = [
     'Topic :: Scientific/Engineering :: Artificial Intelligence',
     'Topic :: Software Development :: Libraries :: Python Modules',
 ]
-description = 'perplexipy - A robust Perplexity AI API client'
+description = 'PerplexiPy - A robust Perplexity AI API client'
 dynamic = [
     'dependencies',
     'version',
 ]
 license = { text='BSD-3' }
-name = 'perplexipy'
+name = 'PerplexiPy'
 readme = 'README.md'
 requires-python = '>=3.9'
 

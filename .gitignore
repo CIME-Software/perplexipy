@@ -126,11 +126,14 @@ dmypy.json
 
 **.NERD*
 **.bash_*
+**.bashrc
 **.config
 **.gitconfig
 **.jupyter
 **.local
+**.profile
 **.ssh/
+**.vimrc
 **/*psd
 **/.conda/*
 **/.cufflinks*
@@ -138,16 +141,20 @@ dmypy.json
 **/.theano
 **/.vim/*
 **/pyvenv.cfg
+**README-1ST.ipynb
 **crypt-password*
 **devpi-hostname*
 **devpi-password*
 **devpi-user*
 **dummy.py
 **dummy.txt
+**lucy
+**lucyfer-compose.yaml
 **manpages/*
 **pip.conf
 **test.txt
 *swp
+
 
 
 # pycharm

@@ -10,7 +10,7 @@
 """
 
 
-__VERSION__ = '0.0.8'
+__VERSION__ = '0.0.9'
 
 
 from collections import namedtuple
@@ -32,6 +32,7 @@ import os
 present, otherwise it's set to the empty string `''`.
 """
 PERPLEXITY_API_KEY = os.environ.get('PERPLEXITY_API_KEY', default = '')
+PERPLEXITY_API_PREFIX = 'pplx-'
 PERPLEXITY_API_URL = 'https://api.perplexity.ai'
 """
 The default model is **mistral-7b-instruct** because of it's efficiency and
@@ -87,7 +88,7 @@ class PerplexityClient:
         """
         if not key:
             raise PerplexityClientError('Provide a valid key argument during instantiation')
-        if not 'pplx-' in key:
+        if not PERPLEXITY_API_PREFIX in key:
             raise PerplexityClientError('The key %s i missing the pplx- prefix - invalid API key')
 
         self._endpoint = endpoint
