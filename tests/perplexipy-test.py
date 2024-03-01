@@ -53,6 +53,9 @@ def test_PerplexityClient_bogusModel(testClient):
     with pytest.raises(Exception):
         testClient.model = TEST_BOGUS_MODEL
 
+    with pytest.raises(Exception):
+        testClient.model = None
+
 
 def test_PerplexityClient_queryBatch(testClient):
     result = testClient.queryBatch(TEST_QUERY)

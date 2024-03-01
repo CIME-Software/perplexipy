@@ -6,11 +6,11 @@
 
 ---
 
-# perplexipy API Documentation
+# PerplexiPy API Documentation
 """
 
 
-__VERSION__ = '0.1.0'
+__VERSION__ = '0.1.1'
 
 
 from collections import namedtuple
@@ -256,12 +256,34 @@ class PerplexityClient:
 
     @property
     def model(self) -> str:
+        """
+        Return the model the client uses for requesting responses from the
+        service provider.  Its default value is:  `PERPLEXITY_DEFAULT_MODEL`.
+        """
         return self._model
 
     @model.setter
     def model(self, value: str):
         """
+        Set the model to use for generating responses.
+
+        Arguments
+        ---------
+            value
+        A string matching one of the supported models.
+
+        Returns
+        -------
+        `None` - setter method decorated as a property.
+
+        Raises
+        ------
+        `perplexipy.PerplexityClientError` if the `value` isn't included in the list of
+        supported models.
         """
+        if not value:
+            raise PerplexityClientError('value cannot be None')
+
         models = self.models
         if value not in models:
             raise PerplexityClientError('value = %s error; supported models: %s' % (value, ', '.join(models)))
