@@ -10,7 +10,7 @@
 """
 
 
-__VERSION__ = '0.1.1'
+__VERSION__ = '0.1.2'
 
 
 from collections import namedtuple
@@ -56,7 +56,7 @@ class PerplexityClient:
     PerplexityClient objects encapsulate all the API functionality.  They can be
     instantiated across multiple contexts, each keeping its own state.
     """
-    def __init__(self, key = PERPLEXITY_API_KEY, endpoint = PERPLEXITY_API_URL):
+    def __init__(self, key: str, endpoint:str = PERPLEXITY_API_URL):
         """
         Create a new instance of `perplexipy.PerplexityClient` using the API
         `key` to connect to the corresponding `endpoint`.
