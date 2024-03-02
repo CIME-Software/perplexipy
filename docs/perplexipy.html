@@ -131,7 +131,7 @@
                     <h1 class="modulename">
 perplexipy    </h1>
 
-                        <div class="docstring"><p>% perplexipy(3) Version 0.1.1 | Perplexity AI high level API documentation</p>
+                        <div class="docstring"><p>% perplexipy(3) Version 0.1.2 | Perplexity AI high level API documentation</p>
 
 <h1 id="name">Name</h1>
 
@@ -310,7 +310,7 @@ support for an earlier Python version is required.</p>
 </span><span id="L-10"><a href="#L-10"><span class="linenos"> 10</span></a><span class="sd">&quot;&quot;&quot;</span>
 </span><span id="L-11"><a href="#L-11"><span class="linenos"> 11</span></a>
 </span><span id="L-12"><a href="#L-12"><span class="linenos"> 12</span></a>
-</span><span id="L-13"><a href="#L-13"><span class="linenos"> 13</span></a><span class="n">__VERSION__</span> <span class="o">=</span> <span class="s1">&#39;0.1.1&#39;</span>
+</span><span id="L-13"><a href="#L-13"><span class="linenos"> 13</span></a><span class="n">__VERSION__</span> <span class="o">=</span> <span class="s1">&#39;0.1.2&#39;</span>
 </span><span id="L-14"><a href="#L-14"><span class="linenos"> 14</span></a>
 </span><span id="L-15"><a href="#L-15"><span class="linenos"> 15</span></a>
 </span><span id="L-16"><a href="#L-16"><span class="linenos"> 16</span></a><span class="kn">from</span> <span class="nn">collections</span> <span class="kn">import</span> <span class="n">namedtuple</span>
@@ -356,7 +356,7 @@ support for an earlier Python version is required.</p>
 </span><span id="L-56"><a href="#L-56"><span class="linenos"> 56</span></a><span class="sd">    PerplexityClient objects encapsulate all the API functionality.  They can be</span>
 </span><span id="L-57"><a href="#L-57"><span class="linenos"> 57</span></a><span class="sd">    instantiated across multiple contexts, each keeping its own state.</span>
 </span><span id="L-58"><a href="#L-58"><span class="linenos"> 58</span></a><span class="sd">    &quot;&quot;&quot;</span>
-</span><span id="L-59"><a href="#L-59"><span class="linenos"> 59</span></a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span> <span class="o">=</span> <span class="n">PERPLEXITY_API_KEY</span><span class="p">,</span> <span class="n">endpoint</span> <span class="o">=</span> <span class="n">PERPLEXITY_API_URL</span><span class="p">):</span>
+</span><span id="L-59"><a href="#L-59"><span class="linenos"> 59</span></a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">endpoint</span><span class="p">:</span><span class="nb">str</span> <span class="o">=</span> <span class="n">PERPLEXITY_API_URL</span><span class="p">):</span>
 </span><span id="L-60"><a href="#L-60"><span class="linenos"> 60</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 </span><span id="L-61"><a href="#L-61"><span class="linenos"> 61</span></a><span class="sd">        Create a new instance of `perplexipy.PerplexityClient` using the API</span>
 </span><span id="L-62"><a href="#L-62"><span class="linenos"> 62</span></a><span class="sd">        `key` to connect to the corresponding `endpoint`.</span>
@@ -596,7 +596,7 @@ support for an earlier Python version is required.</p>
                 <section id="PERPLEXITY_API_KEY">
                     <div class="attr variable">
             <span class="name">PERPLEXITY_API_KEY</span>        =
-<span class="default_value">$PERPLEXITY_API_KEY</span>
+<span class="default_value">&#39;&#39;</span>
 
         
     </div>
@@ -790,7 +790,7 @@ dictionary manipulation is required.</p>
 </span><span id="PerplexityClient-57"><a href="#PerplexityClient-57"><span class="linenos"> 57</span></a><span class="sd">    PerplexityClient objects encapsulate all the API functionality.  They can be</span>
 </span><span id="PerplexityClient-58"><a href="#PerplexityClient-58"><span class="linenos"> 58</span></a><span class="sd">    instantiated across multiple contexts, each keeping its own state.</span>
 </span><span id="PerplexityClient-59"><a href="#PerplexityClient-59"><span class="linenos"> 59</span></a><span class="sd">    &quot;&quot;&quot;</span>
-</span><span id="PerplexityClient-60"><a href="#PerplexityClient-60"><span class="linenos"> 60</span></a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span> <span class="o">=</span> <span class="n">PERPLEXITY_API_KEY</span><span class="p">,</span> <span class="n">endpoint</span> <span class="o">=</span> <span class="n">PERPLEXITY_API_URL</span><span class="p">):</span>
+</span><span id="PerplexityClient-60"><a href="#PerplexityClient-60"><span class="linenos"> 60</span></a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">endpoint</span><span class="p">:</span><span class="nb">str</span> <span class="o">=</span> <span class="n">PERPLEXITY_API_URL</span><span class="p">):</span>
 </span><span id="PerplexityClient-61"><a href="#PerplexityClient-61"><span class="linenos"> 61</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 </span><span id="PerplexityClient-62"><a href="#PerplexityClient-62"><span class="linenos"> 62</span></a><span class="sd">        Create a new instance of `perplexipy.PerplexityClient` using the API</span>
 </span><span id="PerplexityClient-63"><a href="#PerplexityClient-63"><span class="linenos"> 63</span></a><span class="sd">        `key` to connect to the corresponding `endpoint`.</span>
@@ -1035,13 +1035,13 @@ instantiated across multiple contexts, each keeping its own state.</p>
                                         <input id="PerplexityClient.__init__-view-source" class="view-source-toggle-state" type="checkbox" aria-hidden="true" tabindex="-1">
 <div class="attr function">
             
-        <span class="name">PerplexityClient</span><span class="signature pdoc-code multiline">(<span class="param">	<span class="n">key</span><span class="o">=</span><span class="s1">&#39;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&#39;</span>,</span><span class="param">	<span class="n">endpoint</span><span class="o">=</span><span class="s1">&#39;https://api.perplexity.ai&#39;</span></span>)</span>
+        <span class="name">PerplexityClient</span><span class="signature pdoc-code condensed">(<span class="param"><span class="n">key</span><span class="p">:</span> <span class="nb">str</span>, </span><span class="param"><span class="n">endpoint</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;https://api.perplexity.ai&#39;</span></span>)</span>
 
                 <label class="view-source-button" for="PerplexityClient.__init__-view-source"><span>View Source</span></label>
 
     </div>
     <a class="headerlink" href="#PerplexityClient.__init__"></a>
-            <div class="pdoc-code codehilite"><pre><span></span><span id="PerplexityClient.__init__-60"><a href="#PerplexityClient.__init__-60"><span class="linenos"> 60</span></a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span> <span class="o">=</span> <span class="n">PERPLEXITY_API_KEY</span><span class="p">,</span> <span class="n">endpoint</span> <span class="o">=</span> <span class="n">PERPLEXITY_API_URL</span><span class="p">):</span>
+            <div class="pdoc-code codehilite"><pre><span></span><span id="PerplexityClient.__init__-60"><a href="#PerplexityClient.__init__-60"><span class="linenos"> 60</span></a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">endpoint</span><span class="p">:</span><span class="nb">str</span> <span class="o">=</span> <span class="n">PERPLEXITY_API_URL</span><span class="p">):</span>
 </span><span id="PerplexityClient.__init__-61"><a href="#PerplexityClient.__init__-61"><span class="linenos"> 61</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 </span><span id="PerplexityClient.__init__-62"><a href="#PerplexityClient.__init__-62"><span class="linenos"> 62</span></a><span class="sd">        Create a new instance of `perplexipy.PerplexityClient` using the API</span>
 </span><span id="PerplexityClient.__init__-63"><a href="#PerplexityClient.__init__-63"><span class="linenos"> 63</span></a><span class="sd">        `key` to connect to the corresponding `endpoint`.</span>

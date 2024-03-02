@@ -1,5 +1,6 @@
 # See: https://github.com/CIME-Software/perplexipy/blob/master/LICENSE.txt
 
+from perplexipy import PERPLEXITY_API_KEY
 from perplexipy import PerplexityClient
 from perplexipy.errors import PerplexityClientError
 from perplexipy.responses import Responses
@@ -26,7 +27,7 @@ def testClient():
     global _testClient
 
     if not _testClient:
-        _testClient = PerplexityClient()
+        _testClient = PerplexityClient(key = PERPLEXITY_API_KEY)
 
     return _testClient
 
