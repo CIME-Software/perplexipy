@@ -69,7 +69,9 @@ local:
 manpage:
 	mkdir -p $(MANPAGES)
 	t=$$(mktemp) && awk -v "v=$(VERSION)" '/^%/ { $$4 = v; print; next; } { print; }' README.md > "$$t" && cat "$$t" > README.md && rm -f "$$t"
+	t=$$(mktemp) && awk -v "v=$(VERSION)" '/^%/ { $$4 = v; print; next; } { print; }' codex-README.md > "$$t" && cat "$$t" > codex-README.md && rm -f "$$t"
 	pandoc --standalone --from markdown+escaped_line_breaks --to man README.md -o $(MANPAGES)/$(PACKAGE).3
+	pandoc --standalone --from markdown+escaped_line_breaks --to man codex-README.md -o $(MANPAGES)/codex.3
 
 
 nuke: ALWAYS
