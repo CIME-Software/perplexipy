@@ -22,6 +22,18 @@ def _helpUser() -> str:
 
 
 def codexCore(userQuery: str) -> str:
+    """
+    Send a user query to the model for processing.
+
+    Arguments
+    ---------
+        userQuery
+    A string with the user query, most often a programming question.
+
+    Returns
+    -------
+    The result of the query, or `None` if the query was empty.
+    """
     result = None
     if userQuery:
         client = PerplexityClient(key = os.environ['PERPLEXITY_API_KEY'])
@@ -34,7 +46,21 @@ def codexCore(userQuery: str) -> str:
 @click.command('codex')
 @click.version_option(__VERSION__, prog_name = 'codex')
 @click.argument('tokens', nargs = -1, type = click.STRING)
-def codex(tokens):
+def codex(tokens: list) -> str:
+    """
+    Process a command line query and display the result to the console.
+
+    Arguments
+    ---------
+        tokens
+    A list of tokens that will be assembled as a single string for
+    processing.
+
+    Returns
+    -------
+    A string with the response to the query, after displaying it to the
+    console.
+    """
     result = None
     if len(tokens):
         userQuery = 'Concise, code only answer to this question: '+' '.join(tokens)
