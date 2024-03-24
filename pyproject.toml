@@ -26,16 +26,16 @@ classifiers = [
 description = 'PerplexiPy - A robust Perplexity AI API client'
 dynamic = [
     'dependencies',
-    'version',
 ]
 license = { text='BSD-3' }
 name = 'PerplexiPy'
 readme = 'README.md'
 requires-python = '>=3.9'
+version = '0.2.0'
 
 
-# [project.scripts]
-# perplexipy = 'perplexipy:main'
+[project.scripts]
+codex = 'perplexipy.codex:codex'
 
 
 [project.urls]
@@ -61,5 +61,4 @@ packages = [
 
 [tool.setuptools.dynamic]
 dependencies = { file = 'requirements.txt' }
-version = { attr = 'perplexipy.__VERSION__' }
 

@@ -1,4 +1,4 @@
-% perplexipy(3) Version 0.1.2 | Perplexity AI high level API documentation
+% perplexipy(3) Version 0.2.0 | Perplexity AI high level API documentation
 
 Name
 ====
@@ -139,11 +139,12 @@ The **PerplexiPy** package, documentation and examples are licensed under the
 
 See also
 ========
-- PyPI:  <a href='https://pipy.org/project/openai' target='_blank'>openai</a>
+- **codex** - a PerplexiPy command line code explainer
 - API documentation:  https://cime-software.github.io/perplexipy
 - <a href='https://www.perplexity.ai/' target='_blank'>Perplexity AI</a>
 - m0toko:  a Sopel bot plug-in that uses PerplexiPy for providing AI-enhanced
   chatbot functionality:  https://github.com/pr3d4t0r/m0toko
+- PyPI:  <a href='https://pipy.org/project/openai' target='_blank'>openai</a>
 
 
 Caveats
