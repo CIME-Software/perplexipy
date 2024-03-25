@@ -1,4 +1,4 @@
-% codex(3) Version 0.2.1 | PerplexiPy command line code explainer
+% codex(3) Version 0.2.2 | PerplexiPy command line code explainer
 
 Name
 ====
@@ -50,6 +50,17 @@ codex 'A coding question here; best if the language is specified.'
 
 The coding question, including any code snippets, must be enclosed in single
 quotes to prevent shell expansion in Unix-like systems.
+
+**codex** can also process input provided from stdin through redirection or a
+pipe:
+
+
+```bash
+echo "How do I reverse a string in Java?" | codex
+```
+
+The output always goes to stdout.  This simplifies integration with editors and
+IDEs that support a streaming interface like Vim, emacs, VS Code, etc.
 
 
 Vim

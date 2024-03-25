@@ -88,7 +88,7 @@ def codex(tokens: list) -> str:
         userQuery = 'Concise, code only answer to this question: '+' '.join(tokens)
     elif _stdinHasData():
         userQuery = _assembleInput()
-        userQuery = 'Optimize for speed, do not display line numbers in the output: '+userQuery
+        userQuery = 'Give me a concise coding example to answer this question: '+userQuery
 
     if userQuery:
         result = codexCore(userQuery)
