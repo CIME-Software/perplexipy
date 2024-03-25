@@ -1,9 +1,14 @@
 # See: https://github.com/CIME-Software/perplexipy/blob/master/LICENSE.txt
 
 
+from unittest import mock
+
 from click.testing import CliRunner
 from perplexipy.codex import codexCore
 from perplexipy.codex import codex
+
+import io
+import sys
 
 
 TEST_QUERY = 'How do I declare a variable in Dart?'
@@ -26,4 +31,12 @@ def test_codex():
     assert str(result) == '<Result okay>'
     result = runner.invoke(codex, [ ])
     assert str(result) != '<Result okay>'
+
+    # stdin input
+    with mock.patch('sys.stdin', io.StringIO(TEST_QUERY)):
+        result = runner.invoke(codex, [ ])
+
+    assert str(result) != '<Result okay>'
+
+test_codex()
 
