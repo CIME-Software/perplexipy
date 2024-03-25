@@ -1,6 +1,8 @@
 # See: https://github.com/CIME-Software/perplexipy/blob/master/LICENSE.txt
 
 
+from unittest.mock import patch
+
 from click.testing import CliRunner
 from perplexipy.codex import codexCore
 from perplexipy.codex import codex
@@ -20,10 +22,17 @@ def test_codexCore():
     assert not codexCore(None)
 
 
-def test_codex():
+@patch('sys.stdin')
+def test_codex(stdinMock):
     runner = CliRunner()
     result = runner.invoke(codex, [ TEST_QUERY, ])
     assert str(result) == '<Result okay>'
     result = runner.invoke(codex, [ ])
     assert str(result) != '<Result okay>'
+
+    # stdin input
+    stdinMock.read.return_value = TEST_QUERY
+    result = runner.invoke(codex, [ ])
+
+# test_codex()
 

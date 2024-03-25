@@ -5,6 +5,7 @@ from perplexipy import PerplexityClient
 from perplexipy import __VERSION__
 
 import os
+import select
 import sys
 
 import click
@@ -43,6 +44,26 @@ def codexCore(userQuery: str) -> str:
     return result
 
 
+def _stdinHasData() -> bool:
+    """
+    Checks if there's data pending to be processed off `stdin`.  It's a
+    convinience function for readability.
+
+    Returns
+    -------
+    `True` if the `stdin` stream is pending processing.
+    """
+    return select.select([sys.stdin], [], [], 0) == ([sys.stdin], [], [])
+
+
+def _assembleInput() -> str:
+    result = ''
+    for line in sys.stdin:
+        result += line
+
+    return result
+
+
 @click.command('codex')
 @click.version_option(__VERSION__, prog_name = 'codex')
 @click.argument('tokens', nargs = -1, type = click.STRING)
@@ -62,8 +83,14 @@ def codex(tokens: list) -> str:
     console.
     """
     result = None
+    userQuery = None
     if len(tokens):
         userQuery = 'Concise, code only answer to this question: '+' '.join(tokens)
+    elif _stdinHasData():
+        userQuery = _assembleInput()
+        userQuery = 'Give me a concise coding example to answer this question: '+userQuery
+
+    if userQuery:
         result = codexCore(userQuery)
         click.echo(result)
     else:
