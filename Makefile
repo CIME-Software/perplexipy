@@ -47,9 +47,9 @@ devpi:
 
 docs: ALWAYS
 	mkdir -p $(API_DOC_DIR)
-	@[[ -e ".env" ]] && mv ".env" "_env"
+	[[ -e ".env" ]] && mv ".env" "_env"
 	VERSION="$(VERSION)" pdoc --logo="https://images2.imgbox.com/57/94/AsI1WSfy_o.png" --favicon="https://cime.net/upload_area/favicon.ico" -n -o $(API_DOC_DIR) -t ./resources $(PACKAGE)
-	@[[ -e "_env" ]] && mv "_env" ".env"
+	[[ -e "_env" ]] && mv "_env" ".env"
 
 
 install:

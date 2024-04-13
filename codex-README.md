@@ -1,4 +1,4 @@
-% codex(3) Version 0.2.2 | PerplexiPy command line code explainer
+% codex(3) Version 0.3.0 | PerplexiPy command line code explainer
 
 Name
 ====
@@ -43,6 +43,26 @@ It should return something like `/usr/local/bin/codex`.
 
 Usage
 =====
+
+```bash
+codex repl
+```
+
+Starts a REPL for continuous interaction during a command line session.  The
+REPL can be interrupted at any time with `Ctrl-C` and it follows all shell and
+REPL behavior best practices.
+
+Commands:
+
+- `/active [modelID]` - display the current active model or set the active model
+  to `modelID`, where the latter is the number of model in the `/models` listing
+- `/clear` - clear the screen before the next prompt
+- `/help` - this list of commands help
+- `/mode [mode]` - display or set the editing mode to `vi` or `emacs`
+- `/models` - list available models; ordinal ::= `modelID` for `/active`
+
+The REPL starts in `vi` or `Vim` editing mode by default.  Use `/active emacs`
+to override.
 
 ```bash
 codex 'A coding question here; best if the language is specified.'
