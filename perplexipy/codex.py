@@ -21,7 +21,7 @@ import click
 ARG_REPL = 'repl'
 DEFAULT_VIM_EDIT_MODE=True
 QUERY_CRISP = 'Concise, code only reply to this prompt: '
-QUERY_DETAILED = 'Give me a concise coding example in reply this prompt: '
+QUERY_DETAILED = 'Give me a concise coding example and include URL references in reply this prompt: '
 
 
 # *** globals ***
@@ -109,9 +109,12 @@ def _helpREPL():
     print("""
 /active [modelID] - display active model or set active to modelID
 /clear - clear the screen
+/exit - end codex and return to the command prompt
 /help - this commands list help
 /mode [mode] - display or set the editing mode to vi or emacs
 /models - list available models; n = modelID
+/quit - alias for /exit
+? - alias for /help
 """)
 
 
@@ -152,10 +155,10 @@ def _runREPL() -> str:
     _editingMode(session)
     while True:
         userQuery = session.prompt('Ask anything (/exit to end): ')
-        if userQuery[0] == '/':
+        if userQuery[0] in ('/', '?', ':'):
             parts = userQuery.split(' ')
             command = parts[0]
-            if command == '/exit':
+            if command in ('/exit', '/quit', ':q'):
                 sys.exit(0)
             elif command == '/active':
                 if len(parts) > 1:
@@ -168,7 +171,7 @@ def _runREPL() -> str:
             elif command == '/clear':
                 click.clear()
                 _editingMode(session)
-            elif command == '/help':
+            elif command in ('/help', '?'):
                 _helpREPL()
             elif command == '/mode':
                 if len(parts) > 1:
