@@ -140,6 +140,10 @@ class PerplexityClient:
         response = self._client.chat.completions.create(
             model = self.model,
             messages = messages,
+            # TODO: check the OpenAI documentation to see how this is used.
+            # See:  https://docs.mistral.ai/platform/guardrailing/
+            # No guardrailing.
+            # safe_mode = False,
         )
 
         result = response.choices[0].message.content

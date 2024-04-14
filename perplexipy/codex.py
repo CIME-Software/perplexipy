@@ -19,7 +19,8 @@ import click
 # *** constants ***
 
 ARG_REPL = 'repl'
-DEFAULT_VIM_EDIT_MODE=True
+DEFAULT_LLM = 'mixtral-8x7b-instruct'
+DEFAULT_VIM_EDIT_MODE = True
 QUERY_CRISP = 'Concise, code only reply to this prompt: '
 QUERY_DETAILED = 'Give me a concise coding example and include URL references in reply this prompt: '
 
@@ -27,7 +28,7 @@ QUERY_DETAILED = 'Give me a concise coding example and include URL references in
 # *** globals ***
 
 _client = PerplexityClient(key = os.environ['PERPLEXITY_API_KEY'])
-_client.model = 'codellama-70b-instruct'
+_client.model = DEFAULT_LLM
 
 
 # *** implementation ***
@@ -60,7 +61,7 @@ def codexCore(userQuery: str) -> str:
     if userQuery:
         if not _client:
             _client = PerplexityClient(key = os.environ['PERPLEXITY_API_KEY'])
-            _client.model = 'codellama-70b-instruct'
+            _client.model = DEFAULT_LLM
         result = _client.query(userQuery)
 
     return result
@@ -99,6 +100,7 @@ def _activeModel(modelID: int = 0) -> str:
 
 
 def _REPLHello():
+    click.clear()
     printF(HTML('PerplexiPy <b><ansigreen>codex - coding, scripting, and sysops assistant</ansigreen></b>'))
     _activeModel()
     printF(HTML('Enter <b>/help</b> for commands list'))
