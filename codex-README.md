@@ -48,9 +48,9 @@ Usage
 codex repl
 ```
 
-Starts a REPL for continuous interaction during a command line session.  The
-REPL can be interrupted at any time with `Ctrl-C` and it follows all shell and
-REPL behavior best practices.
+Starts a REPL playground for continuous interaction during a command line
+session.  The REPL can be interrupted at any time with `Ctrl-C` and it follows
+all shell and REPL behavior best practices.
 
 Commands:
 
@@ -60,9 +60,15 @@ Commands:
 - `/help` - this list of commands help
 - `/mode [mode]` - display or set the editing mode to `vi` or `emacs`
 - `/models` - list available models; ordinal ::= `modelID` for `/active`
+- `/style` - display or set the query style as `code` or `human`
 
 The REPL starts in `vi` or `Vim` editing mode by default.  Use `/active emacs`
 to override.
+
+When `/style` is set to `code`, all queries are forced to be related to
+programming, scripting, or system administration.  When it's set to `human` the
+queries are "general purpose human information" and may return free form
+responses.
 
 ```bash
 codex 'A coding question here; best if the language is specified.'

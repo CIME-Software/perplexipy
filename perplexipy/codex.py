@@ -19,16 +19,32 @@ import click
 # *** constants ***
 
 ARG_REPL = 'repl'
+"""
+@private
+"""
+
 DEFAULT_LLM = 'mixtral-8x7b-instruct'
 DEFAULT_VIM_EDIT_MODE = True
+"""
+@private
+"""
+
 QUERY_CRISP = 'Concise, code only reply to this prompt: '
+"""
+@private
+"""
+
 QUERY_DETAILED = 'Give me a concise coding example and include URL references in reply this prompt: '
+"""
+@private
+"""
 
 
 # *** globals ***
 
 _client = PerplexityClient(key = os.environ['PERPLEXITY_API_KEY'])
 _client.model = DEFAULT_LLM
+_queryCodeStyle = True
 
 
 # *** implementation ***
@@ -101,7 +117,7 @@ def _activeModel(modelID: int = 0) -> str:
 
 def _REPLHello():
     click.clear()
-    printF(HTML('PerplexiPy <b><ansigreen>codex - coding, scripting, and sysops assistant</ansigreen></b>'))
+    printF(HTML('PerplexiPy <b><ansigreen>codex playground - coding, scripting, and sysops assistant</ansigreen></b>'))
     _activeModel()
     printF(HTML('Enter <b>/help</b> for commands list'))
     print()
@@ -116,6 +132,7 @@ def _helpREPL():
 /mode [mode] - display or set the editing mode to vi or emacs
 /models - list available models; n = modelID
 /quit - alias for /exit
+/style [style] - display or set query style to code or human
 ? - alias for /help
 """)
 
@@ -131,7 +148,6 @@ def _displayModels() -> str:
 
 
 def _editingMode(session: PromptSession, mode = None):
-
     if mode:
         mode = mode.lower()
         newEditingMode = EditingMode.EMACS if mode == 'emacs' else EditingMode.VI
@@ -141,6 +157,25 @@ def _editingMode(session: PromptSession, mode = None):
     click.secho('Editing mode = %s' % editingMode, fg = 'bright_blue')
 
     return session
+
+
+def _queryStyle(newStyle: str = None):
+    global _queryCodeStyle
+
+    if newStyle:
+        if 'human' == newStyle:
+            _queryCodeStyle = False
+        else:
+            _queryCodeStyle = True
+
+    click.secho('Coding query style = %s' % _queryCodeStyle, fg = 'bright_blue')
+
+
+def _makeQuery(userQuery: str) -> str:
+    if _queryCodeStyle:
+        userQuery = QUERY_DETAILED+userQuery
+
+    return codexCore(userQuery)
 
 
 def _runREPL() -> str:
@@ -160,7 +195,7 @@ def _runREPL() -> str:
         if userQuery[0] in ('/', '?', ':'):
             parts = userQuery.split(' ')
             command = parts[0]
-            if command in ('/exit', '/quit', ':q'):
+            if command in ('/exit', '/quit', ':q', '/q'):
                 sys.exit(0)
             elif command == '/active':
                 if len(parts) > 1:
@@ -184,9 +219,14 @@ def _runREPL() -> str:
                 else:
                     _editingMode(session)
             elif command == '/models':
-                    _displayModels()
+                _displayModels()
+            elif command == '/style':
+                if len(parts) > 1:
+                    _queryStyle(parts[1])
+                else:
+                    _queryStyle()
             continue
-        result = codexCore(QUERY_DETAILED+userQuery)
+        result = _makeQuery(userQuery)
         print('%s' % result)
         print('--------------------------------------------------')
         print()
