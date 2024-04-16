@@ -1,6 +1,7 @@
 # See: https://github.com/CIME-Software/perplexipy/blob/master/LICENSE.txt
 
 
+from appdirs import AppDirs
 from prompt_toolkit import HTML
 from prompt_toolkit import PromptSession
 from prompt_toolkit import print_formatted_text as printF
@@ -14,11 +15,21 @@ import select
 import sys
 
 import click
+import yaml
 
 
 # *** constants ***
 
 ARG_REPL = 'repl'
+"""
+@private
+"""
+
+CONFIG_PATH = AppDirs(appname = 'PerplexiPy').user_config_dir
+"""
+@private
+"""
+CONFIG_FILE_NAME = os.path.join(CONFIG_PATH, 'codex-repl.yaml')
 """
 @private
 """
@@ -126,6 +137,7 @@ def _REPLHello():
 def _helpREPL():
     print("""
 /active [modelID] - display active model or set active to modelID
+/cinfo - display configuration info
 /clear - clear the screen
 /exit - end codex and return to the command prompt
 /help - this commands list help
@@ -133,6 +145,7 @@ def _helpREPL():
 /models - list available models; n = modelID
 /quit - alias for /exit
 /style [style] - display or set query style to code or human
+/version - display the codex + PerplexiPy version
 ? - alias for /help
 """)
 
@@ -178,6 +191,39 @@ def _makeQuery(userQuery: str) -> str:
     return codexCore(userQuery)
 
 
+def _displayVersion():
+    click.secho('PerplexiPy codex version %s\n' % __VERSION__, fg = 'bright_green')
+
+
+def _saveConfigTo(config: dict, fileName: str = CONFIG_FILE_NAME, pathName = CONFIG_PATH):
+    if not os.path.exists(CONFIG_PATH):
+        os.makedirs(CONFIG_PATH)
+    with open(fileName, 'w') as outputFile:
+        yaml.dump(config, outputFile)
+
+
+def _loadConfigFrom(fileName: str = CONFIG_FILE_NAME) -> dict:
+    if os.path.exists(fileName):
+        with open(fileName, 'r') as inputFile:
+            config = yaml.safe_load(inputFile)
+    else:
+        config = {
+            'activeModel': 3,
+            'editingMode': 'vi',
+            'queryCodeStyle': _queryCodeStyle,
+        }
+        _saveConfigTo(config, fileName, CONFIG_PATH)
+
+    return config
+
+
+def _displayConfigInfo():
+    pass
+    click.secho('Config file: %s' % CONFIG_FILE_NAME)
+    click.secho(str(_loadConfigFrom())+'\n')
+
+
+# TODO: Refactor REPL - https://github.com/CIME-Software/perplexipy/issues/46
 def _runREPL() -> str:
     """
     Run a REPL loop for sending queries to the AI provider.
@@ -188,8 +234,11 @@ def _runREPL() -> str:
     input.
     """
     _REPLHello()
-    session = PromptSession(vi_mode = True)
-    _editingMode(session)
+    config = _loadConfigFrom()
+    session = PromptSession()
+    _activeModel(config['activeModel'])
+    session = _editingMode(session, config['editingMode'])
+    _queryStyle('code' if config['queryCodeStyle'] else 'human')
     while True:
         userQuery = session.prompt('Ask anything (/exit to end): ')
         if userQuery[0] in ('/', '?', ':'):
@@ -200,11 +249,16 @@ def _runREPL() -> str:
             elif command == '/active':
                 if len(parts) > 1:
                     try:
+                        model = int(parts[1])
                         _activeModel(int(parts[1]))
+                        config['activeModel'] = model
+                        _saveConfigTo(config)
                     except:
                         _activeModel()
                 else:
                     _activeModel()
+            elif command == '/cinfo':
+                _displayConfigInfo()
             elif command == '/clear':
                 click.clear()
                 _editingMode(session)
@@ -214,6 +268,8 @@ def _runREPL() -> str:
                 if len(parts) > 1:
                     try:
                         session = _editingMode(session, parts[1])
+                        config['editingMode'] = parts[1]
+                        _saveConfigTo(config)
                     except:
                         pass
                 else:
@@ -222,13 +278,18 @@ def _runREPL() -> str:
                 _displayModels()
             elif command == '/style':
                 if len(parts) > 1:
-                    _queryStyle(parts[1])
+                    queryStyleType = parts[1]
+                    _queryStyle(queryStyleType)
+                    config['queryCodeStyle'] = not queryStyleType == 'human'
+                    _saveConfigTo(config)
                 else:
                     _queryStyle()
+            elif command == '/version':
+                _displayVersion()
             continue
         result = _makeQuery(userQuery)
         print('%s' % result)
-        print('--------------------------------------------------')
+        click.secho('--------------------------------------------------', fg = 'green')
         print()
 
     return 'REPL'
