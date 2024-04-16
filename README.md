@@ -1,4 +1,4 @@
-% perplexipy(3) Version 0.2.2 | Perplexity AI high level API documentation
+% perplexipy(3) Version 0.3.0 | Perplexity AI high level API documentation
 
 Name
 ====

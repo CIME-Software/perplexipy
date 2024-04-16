@@ -1,6 +1,8 @@
 # See: https://github.com/CIME-Software/perplexipy/blob/master/LICENSE.txt
 
 
+from collections import OrderedDict
+
 import importlib.metadata
 
 
@@ -138,6 +140,10 @@ class PerplexityClient:
         response = self._client.chat.completions.create(
             model = self.model,
             messages = messages,
+            # TODO: check the OpenAI documentation to see how this is used.
+            # See:  https://docs.mistral.ai/platform/guardrailing/
+            # No guardrailing.
+            # safe_mode = False,
         )
 
         result = response.choices[0].message.content
@@ -244,7 +250,7 @@ class PerplexityClient:
         - `modelType`
         - `availability`
         """
-        supportedModels = {
+        supportedModels = OrderedDict({
             'codellama-70b-instruct': ModelInfo('70B', 16384, 'chat completion', 'open source',),
             'mistral-7b-instruct': ModelInfo('7B', 16384, 'chat completion', 'open source',),
             'mixtral-8x7b-instruct': ModelInfo('8x7B', 16384, 'chat completion', 'open source',),
@@ -252,7 +258,7 @@ class PerplexityClient:
             'sonar-medium-online': ModelInfo('8x7B', 12000, 'chat completion', 'Perplexity',),
             'sonar-small-chat': ModelInfo('7B', 16384, 'chat completion', 'Perplexity',),
             'sonar-small-online': ModelInfo('7B', 12000, 'chat completion', 'Perplexity',),
-        }
+        })
 
         return supportedModels
 
