@@ -1,4 +1,4 @@
-% codex(3) Version 0.3.0 | PerplexiPy command line code explainer
+% codex(3) Version 0.4.0 | PerplexiPy command line code explainer
 
 Name
 ====
