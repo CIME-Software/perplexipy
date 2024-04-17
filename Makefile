@@ -83,7 +83,6 @@ package:
 	python -m build -wn
 
 
-# TODO: Bug - lists some file names in $(pwd) as branches to delete
 prune:
 	for f in $$(git branch | awk '!/master/ && !/main/ && !/^\\*/'); do git branch -d "$$f"; done
 
