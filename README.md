@@ -1,4 +1,4 @@
-% perplexipy(3) Version 0.4.1 | Perplexity AI high level API documentation
+% perplexipy(3) Version 0.4.2 | Perplexity AI high level API documentation
 
 Name
 ====
@@ -141,7 +141,6 @@ run it:
 
 ```bash
 # In a virtualenv:
-
 pip install -U perplexipy
 export PERPLEXITY_API_KEY="your-key-goes-here"
 codex repl

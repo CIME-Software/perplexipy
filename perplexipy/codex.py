@@ -176,7 +176,7 @@ def _queryStyle(newStyle: str = None):
     global _queryCodeStyle
 
     if newStyle:
-        _queryCodeStyle = not 'human'
+        _queryCodeStyle = newStyle != 'human'
     click.secho('Coding query style = %s' % _queryCodeStyle, fg = 'bright_blue')
     return _queryCodeStyle
 

@@ -1,10 +1,13 @@
-% Codex(3) Version 0.4.1 | PerplexiPy command line code explainer
+% Codex(3) Version 0.4.2 | PerplexiPy command line code explainer
 
 Name
 ====
 
 **codex** - A command line code explainer and snippet generator based on
-PerplexiPy
+PerplexiPy.
+
+
+<img src='https://images2.imgbox.com/57/94/AsI1WSfy_o.png'>
 
 
 Synopsis
@@ -45,6 +48,9 @@ Usage
 =====
 
 ```bash
+# In a virtualenv:
+pip install -U perplexipy
+export PERPLEXITY_API_KEY="your-key-goes-here"
 codex repl
 ```
 
@@ -71,6 +77,15 @@ When `/style` is set to `code`, all queries are forced to be related to
 programming, scripting, or system administration.  When it's set to `human` the
 queries are "general purpose human information" and may return free form
 responses.
+
+Sample session:
+
+<a href='https://images2.imgbox.com/c4/de/6kQ4aDuA_o.png' target='_blank'>
+    <img src='https://images2.imgbox.com/c4/de/6kQ4aDuA_o.png'>
+</a>
+
+
+Command line usage:
 
 ```bash
 codex 'A coding question here; best if the language is specified.'
