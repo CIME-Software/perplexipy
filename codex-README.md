@@ -1,4 +1,4 @@
-% codex(3) Version 0.4.0 | PerplexiPy command line code explainer
+% Codex(3) Version 0.4.1 | PerplexiPy command line code explainer
 
 Name
 ====
@@ -16,7 +16,7 @@ codex 'Show me how to instantiate a dataframe from a dictionary in Python'
 
 Description
 ===========
-**codex** is an interactive command line tool for answering programming queries
+**Codex** is an interactive command line tool for answering programming queries
 related to coding and shell scripting.  It uses the Code Llama model to generate
 its responses.
 
@@ -26,7 +26,7 @@ be imported into Vim or emacs buffers as-is.
 
 Installation
 ============
-**codex** is installed as part of the PerplexiPy API package.
+**Codex** is installed as part of the PerplexiPy API package.
 
 ```bash
 pip install -U perplexipy
@@ -54,13 +54,15 @@ all shell and REPL behavior best practices.
 
 Commands:
 
-- `/active [modelID]` - display the current active model or set the active model
+- `/active [modelID]` display the current active model or set the active model
   to `modelID`, where the latter is the number of model in the `/models` listing
-- `/clear` - clear the screen before the next prompt
-- `/help` - this list of commands help
-- `/mode [mode]` - display or set the editing mode to `vi` or `emacs`
-- `/models` - list available models; ordinal ::= `modelID` for `/active`
-- `/style` - display or set the query style as `code` or `human`
+- `/cinfo` display configuration info
+- `/clear` clear the screen before the next prompt
+- `/help` this list of commands help
+- `/mode [mode]` display or set the editing mode to `vi` or `emacs`
+- `/models` list available models; ordinal ::= `modelID` for `/active`
+- `/style` display or set the query style as `code` or `human`
+- '/version' display the PerplexiPy + Codex version
 
 The REPL starts in `vi` or `Vim` editing mode by default.  Use `/active emacs`
 to override.
@@ -77,7 +79,7 @@ codex 'A coding question here; best if the language is specified.'
 The coding question, including any code snippets, must be enclosed in single
 quotes to prevent shell expansion in Unix-like systems.
 
-**codex** can also process input provided from stdin through redirection or a
+**Codex** can also process input provided from stdin through redirection or a
 pipe:
 
 
@@ -91,20 +93,20 @@ IDEs that support a streaming interface like Vim, emacs, VS Code, etc.
 
 Vim
 ---
-Use the `:h read` Vim command to run **codex** and insert its output at the
+Use the `:h read` Vim command to run **Codex** and insert its output at the
 current cursor position:
 
 ```vim
 :read !codex 'Python pandas dataframe declaration using a dictionary defined by x'
 ```
 
-Visual mode selections can be passed to **codex** as snippets for analysis or
+Visual mode selections can be passed to **Codex** as snippets for analysis or
 explanation.
 
 
 License
 =======
-**codex**, the **PerplexiPy** package, documentation and examples are licensed
+**Codex**, the **PerplexiPy** package, documentation and examples are licensed
 under the [BSD-3 open source license](https://github.com/CIME-Software/perplexipy/blob/master/LICENSE.txt).
 
 
