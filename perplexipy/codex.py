@@ -122,13 +122,13 @@ def _activeModel(modelID: int = 0) -> str:
             _client.model = model
         except:
             click.secho('Invalid model ID = %s' % modelID, bg = 'red', fg = 'white')
-
     click.secho('Active model: %s\n' % _client.model, fg = 'green', bold = True)
+    return modelID
 
 
 def _REPLHello():
     click.clear()
-    printF(HTML('PerplexiPy <b><ansigreen>codex playground - coding, scripting, and sysops assistant</ansigreen></b>'))
+    printF(HTML('PerplexiPy <b><ansigreen>Codex playground - coding, scripting, and sysops assistant</ansigreen></b>'))
     _activeModel()
     printF(HTML('Enter <b>/help</b> for commands list'))
     print()
@@ -139,13 +139,13 @@ def _helpREPL():
 /active [modelID] - display active model or set active to modelID
 /cinfo - display configuration info
 /clear - clear the screen
-/exit - end codex and return to the command prompt
+/exit - end Codex and return to the command prompt
 /help - this commands list help
 /mode [mode] - display or set the editing mode to vi or emacs
 /models - list available models; n = modelID
 /quit - alias for /exit
 /style [style] - display or set query style to code or human
-/version - display the codex + PerplexiPy version
+/version - display the Codex + PerplexiPy version
 ? - alias for /help
 """)
 
@@ -176,12 +176,9 @@ def _queryStyle(newStyle: str = None):
     global _queryCodeStyle
 
     if newStyle:
-        if 'human' == newStyle:
-            _queryCodeStyle = False
-        else:
-            _queryCodeStyle = True
-
+        _queryCodeStyle = not 'human'
     click.secho('Coding query style = %s' % _queryCodeStyle, fg = 'bright_blue')
+    return _queryCodeStyle
 
 
 def _makeQuery(userQuery: str) -> str:
@@ -192,17 +189,17 @@ def _makeQuery(userQuery: str) -> str:
 
 
 def _displayVersion():
-    click.secho('PerplexiPy codex version %s\n' % __VERSION__, fg = 'bright_green')
+    click.secho('PerplexiPy Codex version %s\n' % __VERSION__, fg = 'bright_green')
 
 
 def _saveConfigTo(config: dict, fileName: str = CONFIG_FILE_NAME, pathName = CONFIG_PATH):
-    if not os.path.exists(CONFIG_PATH):
-        os.makedirs(CONFIG_PATH)
+    if not os.path.exists(pathName):
+        os.makedirs(pathName)
     with open(fileName, 'w') as outputFile:
         yaml.dump(config, outputFile)
 
 
-def _loadConfigFrom(fileName: str = CONFIG_FILE_NAME) -> dict:
+def _loadConfigFrom(fileName: str = CONFIG_FILE_NAME, pathName = CONFIG_PATH) -> dict:
     if os.path.exists(fileName):
         with open(fileName, 'r') as inputFile:
             config = yaml.safe_load(inputFile)
@@ -212,8 +209,7 @@ def _loadConfigFrom(fileName: str = CONFIG_FILE_NAME) -> dict:
             'editingMode': 'vi',
             'queryCodeStyle': _queryCodeStyle,
         }
-        _saveConfigTo(config, fileName, CONFIG_PATH)
-
+        _saveConfigTo(config, fileName, pathName)
     return config
 
 
@@ -250,8 +246,7 @@ def _runREPL() -> str:
                 if len(parts) > 1:
                     try:
                         model = int(parts[1])
-                        _activeModel(int(parts[1]))
-                        config['activeModel'] = model
+                        config['activeModel'] = _activeModel(model)
                         _saveConfigTo(config)
                     except:
                         _activeModel()
@@ -279,8 +274,7 @@ def _runREPL() -> str:
             elif command == '/style':
                 if len(parts) > 1:
                     queryStyleType = parts[1]
-                    _queryStyle(queryStyleType)
-                    config['queryCodeStyle'] = not queryStyleType == 'human'
+                    config['queryCodeStyle'] = _queryStyle(queryStyleType)
                     _saveConfigTo(config)
                 else:
                     _queryStyle()
