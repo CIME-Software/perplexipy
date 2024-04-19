@@ -1,9 +1,12 @@
-% perplexipy(3) Version 0.4.1 | Perplexity AI high level API documentation
+% perplexipy(3) Version 0.4.2 | Perplexity AI high level API documentation
 
 Name
 ====
 
 **PerplexiPy** - Perplexity AI high level library
+
+
+<img src='https://images2.imgbox.com/57/94/AsI1WSfy_o.png'>
 
 
 Synopsis
@@ -129,6 +132,22 @@ client.model = models.keys()[0] # OK
 Async usage
 ===========
 Not supported at this time.
+
+
+Interactive usage
+=================
+PerplexiPy ships with the Codex Playground, an interactive REPL console.  To
+run it:
+
+```bash
+# In a virtualenv:
+pip install -U perplexipy
+export PERPLEXITY_API_KEY="your-key-goes-here"
+codex repl
+```
+
+Full description of Codex Playground and other use cases like streaming API and
+CLI argument passing in the [Codex README](https://github.com/CIME-Software/perplexipy/blob/master/codex-README.md).
 
 
 License

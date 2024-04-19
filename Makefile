@@ -83,9 +83,8 @@ package:
 	python -m build -wn
 
 
-# TODO: Bug - lists some file names in $(pwd) as branches to delete
 prune:
-	for f in $$(git branch | awk '!/master/ && !/main/ && !/^\	/'); do git branch -d "$$f"; done
+	for f in $$(git branch | awk '!/master/ && !/main/ && !/^\\*/'); do git branch -d "$$f"; done
 
 
 # The publish: target is for PyPI, not for the devpi server.
