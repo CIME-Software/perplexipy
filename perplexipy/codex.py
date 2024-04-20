@@ -123,7 +123,7 @@ def _activeModel(modelID: int = 0) -> str:
         except:
             click.secho('Invalid model ID = %s' % modelID, bg = 'red', fg = 'white')
     click.secho('Active model: %s\n' % _client.model, fg = 'green', bold = True)
-    return modelID
+    return _client.model
 
 
 def _REPLHello():
@@ -249,9 +249,9 @@ def _runREPL() -> str:
                         config['activeModel'] = _activeModel(model)
                         _saveConfigTo(config)
                     except:
-                        _activeModel()
-                else:
-                    _activeModel()
+                        # Invalid input, ignore and leave the current model
+                        # active.
+                        pass
             elif command == '/cinfo':
                 _displayConfigInfo()
             elif command == '/clear':

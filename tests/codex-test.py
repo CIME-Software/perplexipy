@@ -4,9 +4,10 @@
 from unittest.mock import patch
 
 from click.testing import CliRunner
-from perplexipy.codex import codexCore
-from perplexipy.codex import codex
+from perplexipy.codex import _activeModel
 from perplexipy.codex import _loadConfigFrom
+from perplexipy.codex import codex
+from perplexipy.codex import codexCore
 
 import os
 import pytest
@@ -67,5 +68,15 @@ def test__loadConfigFrom(_configFileName, _configPath):
     assert isinstance(config, dict)
 
 
+# TODO: Implement test using the temporary config as a fixture.
+def test__activateModel():
+    x = _activeModel()
+    assert x
+    assert isinstance(x, str)
+
+    # TODO: Implement the rest of the tests using the config/fixture.
+
+
 # test__loadConfigFrom(TEST_CONFIG_FILE_NAME, TEST_CONFIG_PATH)
+test__activateModel()
 
