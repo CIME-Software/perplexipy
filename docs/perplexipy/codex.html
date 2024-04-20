@@ -240,7 +240,7 @@
 </span><span id="L-176"><a href="#L-176"><span class="linenos">176</span></a>    <span class="k">global</span> <span class="n">_queryCodeStyle</span>
 </span><span id="L-177"><a href="#L-177"><span class="linenos">177</span></a>
 </span><span id="L-178"><a href="#L-178"><span class="linenos">178</span></a>    <span class="k">if</span> <span class="n">newStyle</span><span class="p">:</span>
-</span><span id="L-179"><a href="#L-179"><span class="linenos">179</span></a>        <span class="n">_queryCodeStyle</span> <span class="o">=</span> <span class="ow">not</span> <span class="s1">&#39;human&#39;</span>
+</span><span id="L-179"><a href="#L-179"><span class="linenos">179</span></a>        <span class="n">_queryCodeStyle</span> <span class="o">=</span> <span class="n">newStyle</span> <span class="o">!=</span> <span class="s1">&#39;human&#39;</span>
 </span><span id="L-180"><a href="#L-180"><span class="linenos">180</span></a>    <span class="n">click</span><span class="o">.</span><span class="n">secho</span><span class="p">(</span><span class="s1">&#39;Coding query style = </span><span class="si">%s</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="n">_queryCodeStyle</span><span class="p">,</span> <span class="n">fg</span> <span class="o">=</span> <span class="s1">&#39;bright_blue&#39;</span><span class="p">)</span>
 </span><span id="L-181"><a href="#L-181"><span class="linenos">181</span></a>    <span class="k">return</span> <span class="n">_queryCodeStyle</span>
 </span><span id="L-182"><a href="#L-182"><span class="linenos">182</span></a>
