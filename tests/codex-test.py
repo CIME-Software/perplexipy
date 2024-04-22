@@ -4,9 +4,12 @@
 from unittest.mock import patch
 
 from click.testing import CliRunner
-from perplexipy.codex import codexCore
-from perplexipy.codex import codex
+from perplexipy.codex import DEFAULT_LLM
+from perplexipy.codex import _activeModel
+from perplexipy.codex import _displayModels
 from perplexipy.codex import _loadConfigFrom
+from perplexipy.codex import codex
+from perplexipy.codex import codexCore
 
 import os
 import pytest
@@ -28,6 +31,11 @@ def _configFileName():
 @pytest.fixture
 def _configPath():
     return TEST_CONFIG_PATH
+
+
+@pytest.fixture(autouse = True)
+def stdoutHide(monkeypatch):
+    monkeypatch.setattr('sys.stdout', open('/dev/null', 'w'))
 
 
 # *** tests ***
@@ -67,5 +75,24 @@ def test__loadConfigFrom(_configFileName, _configPath):
     assert isinstance(config, dict)
 
 
-# test__loadConfigFrom(TEST_CONFIG_FILE_NAME, TEST_CONFIG_PATH)
+def test__displayModels():
+    models = _displayModels()
+    assert models
+    assert isinstance(models, list)
+    assert DEFAULT_LLM in models
+
+
+def test__activateModel():
+    model = _activeModel()
+    assert model
+    assert isinstance(model, str)
+
+    models = _displayModels()
+
+    modelID = len(models)
+    model = _activeModel(modelID)
+    assert models[modelID-1] == model
+    modelID = 2
+    model = _activeModel(modelID)
+    assert models[modelID-1] == model
 

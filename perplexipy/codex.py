@@ -123,7 +123,7 @@ def _activeModel(modelID: int = 0) -> str:
         except:
             click.secho('Invalid model ID = %s' % modelID, bg = 'red', fg = 'white')
     click.secho('Active model: %s\n' % _client.model, fg = 'green', bold = True)
-    return modelID
+    return _client.model
 
 
 def _REPLHello():
@@ -150,7 +150,14 @@ def _helpREPL():
 """)
 
 
-def _displayModels() -> str:
+def _displayModels() -> list:
+    """
+    Display the list of models supported by the API.
+
+    Returns
+    =======
+    A list of strings, each corresponding to a model name.
+    """
     _activeModel()
     print('Available models:\n')
     n = 1
@@ -158,6 +165,8 @@ def _displayModels() -> str:
         print('%2d - %s' % (n, model))
         n += 1
     print()
+
+    return list(_client.models.keys())
 
 
 def _editingMode(session: PromptSession, mode = None):
@@ -229,10 +238,10 @@ def _runREPL() -> str:
     The word "REPL" to signal to the `codex` command that it received valid
     input.
     """
-    _REPLHello()
     config = _loadConfigFrom()
     session = PromptSession()
-    _activeModel(config['activeModel'])
+    _activeModel(list(_client.models.keys()).index(config['activeModel'])+1)
+    _REPLHello()
     session = _editingMode(session, config['editingMode'])
     _queryStyle('code' if config['queryCodeStyle'] else 'human')
     while True:
@@ -249,7 +258,9 @@ def _runREPL() -> str:
                         config['activeModel'] = _activeModel(model)
                         _saveConfigTo(config)
                     except:
-                        _activeModel()
+                        # Invalid input, ignore and leave the current model
+                        # active.
+                        pass
                 else:
                     _activeModel()
             elif command == '/cinfo':
