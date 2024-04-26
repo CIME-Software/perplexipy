@@ -34,7 +34,7 @@ CONFIG_FILE_NAME = os.path.join(CONFIG_PATH, 'codex-repl.yaml')
 @private
 """
 
-DEFAULT_LLM = 'mixtral-8x7b-instruct'
+DEFAULT_MODEL_NAME = 'mixtral-8x7b-instruct'
 DEFAULT_VIM_EDIT_MODE = True
 """
 @private
@@ -54,8 +54,22 @@ QUERY_DETAILED = 'Give me a concise coding example and include URL references in
 # *** globals ***
 
 _client = PerplexityClient(key = os.environ['PERPLEXITY_API_KEY'])
-_client.model = DEFAULT_LLM
+_client.model = DEFAULT_MODEL_NAME
 _queryCodeStyle = True
+
+
+# *** classes and objects ***
+
+class CodexREPL:
+
+    def __init__(self):
+        self._client = PerplexityClient(key = os.environ['PERPLEXITY_API_KEY'])
+        self._client.model = DEFAULT_MODEL_NAME
+        self._queryCodeStyle = True
+
+
+    def run(self):
+        pass
 
 
 # *** implementation ***
@@ -88,7 +102,7 @@ def codexCore(userQuery: str) -> str:
     if userQuery:
         if not _client:
             _client = PerplexityClient(key = os.environ['PERPLEXITY_API_KEY'])
-            _client.model = DEFAULT_LLM
+            _client.model = DEFAULT_MODEL_NAME
         result = _client.query(userQuery)
 
     return result
@@ -214,7 +228,7 @@ def _loadConfigFrom(fileName: str = CONFIG_FILE_NAME, pathName = CONFIG_PATH) ->
             config = yaml.safe_load(inputFile)
     else:
         config = {
-            'activeModel': 3,
+            'activeModel': DEFAULT_MODEL_NAME,
             'editingMode': 'vi',
             'queryCodeStyle': _queryCodeStyle,
         }
