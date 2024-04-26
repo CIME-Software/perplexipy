@@ -61,7 +61,7 @@ _queryCodeStyle = True
 # *** classes and objects ***
 
 class CodexREPL:
-    
+
     def __init__(self):
         self._client = PerplexityClient(key = os.environ['PERPLEXITY_API_KEY'])
         self._client.model = DEFAULT_LLM
