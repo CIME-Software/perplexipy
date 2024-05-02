@@ -4,7 +4,7 @@
 from unittest.mock import patch
 
 from click.testing import CliRunner
-from perplexipy.codex import DEFAULT_LLM
+from perplexipy.codex import DEFAULT_MODEL_NAME
 from perplexipy.codex import _activeModel
 from perplexipy.codex import _displayModels
 from perplexipy.codex import _loadConfigFrom
@@ -69,6 +69,8 @@ def test__loadConfigFrom(_configFileName, _configPath):
     assert os.path.exists(_configPath)
     assert os.path.exists(_configFileName)
     assert isinstance(config, dict)
+    assert config['activeModel'] == DEFAULT_MODEL_NAME
+    assert config['activeModel'] in _displayModels()
 
     # Config file already exists:
     config = _loadConfigFrom(_configFileName, _configPath)
@@ -79,7 +81,7 @@ def test__displayModels():
     models = _displayModels()
     assert models
     assert isinstance(models, list)
-    assert DEFAULT_LLM in models
+    assert DEFAULT_MODEL_NAME in models
 
 
 def test__activateModel():
