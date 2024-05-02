@@ -6,6 +6,7 @@ from unittest.mock import patch
 from click.testing import CliRunner
 from perplexipy.codex import DEFAULT_MODEL_NAME
 from perplexipy.codex import _activeModel
+from perplexipy.codex import _die
 from perplexipy.codex import _displayModels
 from perplexipy.codex import _loadConfigFrom
 from perplexipy.codex import codex
@@ -39,6 +40,11 @@ def stdoutHide(monkeypatch):
 
 
 # *** tests ***
+
+@pytest.mark.skip('_die() works')
+def test__die():
+    pass
+
 
 def test_codexCore():
     result = codexCore(TEST_QUERY)
