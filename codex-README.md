@@ -1,4 +1,4 @@
-% Codex(3) Version 1.0.4 | PerplexiPy command line code explainer
+% Codex(3) Version 1.0.5 | PerplexiPy command line code explainer
 
 Name
 ====
@@ -42,6 +42,9 @@ which codex
 ```
 
 It should return something like `/usr/local/bin/codex`.
+
+PerplexiPy requires an API key issued by Perplexity.  You may set PERPLEXITY_API_KEY
+as an environment variable or use a `.env` file.
 
 
 Usage

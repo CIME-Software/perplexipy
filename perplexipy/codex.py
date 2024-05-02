@@ -51,9 +51,22 @@ QUERY_DETAILED = 'Give me a concise coding example and include URL references in
 """
 
 
+def _die(msg: str, exitCode: int = 99):
+    if exitCode == 1:
+        msgColor = 'white'
+    else:
+        msgColor = 'bright_yellow'
+    click.secho(msg+'\n', fg = msgColor)
+    sys.exit(exitCode)
+
+
 # *** globals ***
 
-_client = PerplexityClient(key = os.environ['PERPLEXITY_API_KEY'])
+try:
+    _client = PerplexityClient(key = os.environ['PERPLEXITY_API_KEY'])
+except:
+    _die('PERPLEXITY_API_KEY undefined in the environment or .env file', 2)
+
 _client.model = DEFAULT_MODEL_NAME
 _queryCodeStyle = True
 
@@ -180,11 +193,6 @@ class CodexREPL:
 
 
 # *** implementation ***
-
-def _die(msg: str, exitCode: int = 99):
-    click.echo(msg)
-    sys.exit(99)
-
 
 def _helpUser() -> str:
     return "Syntax: codex repl | 'your coding question here in single quotes'\n"

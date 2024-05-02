@@ -1,4 +1,4 @@
-% perplexipy(3) Version 1.0.4 | Perplexity AI high level API documentation
+% perplexipy(3) Version 1.0.5 | Perplexity AI high level API documentation
 
 Name
 ====
@@ -69,6 +69,9 @@ pip install perplexipy
 ```
 
 Package information:  https://pypi.org/project/perplexipy
+
+PerplexiPy requires an API key issued by Perplexity.  You may set PERPLEXITY_API_KEY
+as an environment variable or use a `.env` file.
 
 
 API key
