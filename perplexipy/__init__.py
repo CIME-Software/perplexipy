@@ -31,7 +31,7 @@ load_dotenv()
 import os
 
 
-
+_CLAUDE_MODEL = 'claude-3-haiku'
 """
 `PERPLEXITY_API_KEY` is set to the environment variable of the same name if
 present, otherwise it's set to the empty string `''`.
@@ -43,7 +43,7 @@ PERPLEXITY_API_URL = 'https://api.perplexity.ai'
 The default model is **mistral-7b-instruct** because of it's efficiency and
 performance qualities.  Ref:  https://arxiv.org/abs/2310.06825
 """
-PERPLEXITY_DEFAULT_MODEL = 'mistral-7b-instruct'
+PERPLEXITY_DEFAULT_MODEL = 'llama-3-sonar-small-32k-chat'
 PERPLEXITY_DEFAULT_ROLE = 'user'
 PERPLEXITY_TIMEOUT = 30.0 # seconds
 PERPLEXITY_VALID_ROLES = { 'assistant', 'system', 'user', } # future proofing.
@@ -61,7 +61,7 @@ class PerplexityClient:
     PerplexityClient objects encapsulate all the API functionality.  They can be
     instantiated across multiple contexts, each keeping its own state.
     """
-    def __init__(self, key: str, endpoint:str = PERPLEXITY_API_URL):
+    def __init__(self, key: str, endpoint:str = PERPLEXITY_API_URL, unitTest = False):
         """
         Create a new instance of `perplexipy.PerplexityClient` using the API
         `key` to connect to the corresponding `endpoint`.
@@ -72,7 +72,11 @@ class PerplexityClient:
         A valid API key string.  If not present, it defaults to `perplexipy.PERPLEXITY_API_KEY`.
 
             endpoint
-        An string representing a URL to the Perplexity API.
+        A string representing a URL to the Perplexity API.
+
+            unitTest
+        A Boolean to indicate if internal object states need to be modified for
+        unit testing.  Has no effect in regular code.
 
         Returns
         -------
@@ -105,6 +109,7 @@ class PerplexityClient:
             base_url = self._endpoint,
             timeout = PERPLEXITY_TIMEOUT,
         )
+        self._unitTest = unitTest
 
 
     def query(self, query: str) -> str:
@@ -233,7 +238,7 @@ class PerplexityClient:
 
 
     @property
-    def models(self):
+    def models(self, unitTest = False):
         """
         Provide a dictionary of the models supported by Perplexity listed in:
 
@@ -252,14 +257,14 @@ class PerplexityClient:
         """
         supportedModels = OrderedDict({
             'codellama-70b-instruct': ModelInfo('70B', 16384, 'chat completion', 'open source',),
-            'llama-3-8b-instruct': ModelInfo('8B', 8192, 'chat completion', 'open source'),
             'llama-3-70b-instruct': ModelInfo('70B', 8192, 'chat completion', 'open source'),
+            'llama-3-8b-instruct': ModelInfo('8B', 8192, 'chat completion', 'open source'),
+            'llama-3-sonar-large-32k-chat': ModelInfo('8x7B', 32768, 'chat completion', 'Perplexity',),
+            'llama-3-sonar-large-32k-online': ModelInfo('8x7B', 32768, 'chat completion', 'Perplexity',),
+            'llama-3-sonar-small-32k-chat': ModelInfo('7B', 32768, 'chat completion', 'Perplexity',),
+            'llama-3-sonar-small-32k-online': ModelInfo('7B', 32768, 'chat completion', 'Perplexity',),
             'mistral-7b-instruct': ModelInfo('7B', 16384, 'chat completion', 'open source',),
             'mixtral-8x7b-instruct': ModelInfo('8x7B', 16384, 'chat completion', 'open source',),
-            'sonar-medium-chat': ModelInfo('8x7B', 16348, 'chat completion', 'Perplexity',),
-            'sonar-medium-online': ModelInfo('8x7B', 12000, 'chat completion', 'Perplexity',),
-            'sonar-small-chat': ModelInfo('7B', 16384, 'chat completion', 'Perplexity',),
-            'sonar-small-online': ModelInfo('7B', 12000, 'chat completion', 'Perplexity',),
         })
 
         return supportedModels
@@ -296,8 +301,15 @@ class PerplexityClient:
             raise PerplexityClientError('value cannot be None')
 
         models = self.models
-        if value not in models:
-            raise PerplexityClientError('value = %s error; supported models: %s' % (value, ', '.join(models)))
+        if not self._unitTest:
+            if value not in models:
+                raise PerplexityClientError('value = %s error; supported models: %s' % (value, ', '.join(models)))
 
         self._model = value
+
+        # Validate that the model still works, revert otherwise
+        try:
+            self.query('Concise answer: what color is the sky?')
+        except:
+            raise PerplexityClientError('model %s no longer available in underlying API')
 

@@ -246,11 +246,14 @@ def _assembleInput() -> str:
 def _activeModel(modelID: int = 0) -> str:
     if modelID:
         try:
+            modelsList = list(_client.models.keys())
             ref = modelID-1
-            model = list(_client.models.keys())[ref]
+            model = modelsList[ref]
             _client.model = model
         except:
             click.secho('Invalid model ID = %s' % modelID, bg = 'red', fg = 'white')
+            if modelID in range(1, len(modelsList)):
+                click.secho('Model no longer supported by the back-end Perplexity provider', bg = 'bright_yellow', fg = 'black')
     click.secho('Active model: %s\n' % _client.model, fg = 'green', bold = True)
     return _client.model
 
