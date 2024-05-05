@@ -2,6 +2,7 @@
 
 from perplexipy import PERPLEXITY_API_KEY
 from perplexipy import PerplexityClient
+from perplexipy import _CLAUDE_MODEL
 from perplexipy.errors import PerplexityClientError
 from perplexipy.responses import Responses
 
@@ -50,12 +51,20 @@ def test_PerplexityClient_query(testClient):
         testClient.query((TEST_QUERY, 'xxxx'))
 
 
-def test_PerplexityClient_bogusModel(testClient):
+def test_PerplexityClient_modelAccessors(testClient):
     with pytest.raises(Exception):
         testClient.model = TEST_BOGUS_MODEL
 
     with pytest.raises(Exception):
         testClient.model = None
+
+    originalModel = testClient.model
+    unitTestState = testClient._unitTest
+    testClient._unitTest = True
+    with pytest.raises(Exception):
+        testClient.model = _CLAUDE_MODEL
+    testClient._unitTest = unitTestState
+    testClient.model = originalModel
 
 
 def test_PerplexityClient_queryBatch(testClient):
@@ -86,6 +95,5 @@ def test_PerplexityClient_models(testClient):
     assert model in models.keys()
 
 
-# _testClient = PerplexityClient()
-# test_PerplexityClient_bogusModel(_testClient)
-
+# _testClient = PerplexityClient(key = PERPLEXITY_API_KEY)
+# test_PerplexityClient_modelAccessors(_testClient)

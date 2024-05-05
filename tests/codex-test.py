@@ -104,3 +104,6 @@ def test__activateModel():
     model = _activeModel(modelID)
     assert models[modelID-1] == model
 
+
+# test__activateModel()
+
