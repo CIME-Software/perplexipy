@@ -32,17 +32,14 @@ import os
 
 
 _CLAUDE_MODEL = 'claude-3-haiku'
+PERPLEXITY_API_KEY = os.environ.get('PERPLEXITY_API_KEY', default = '')
 """
 `PERPLEXITY_API_KEY` is set to the environment variable of the same name if
-present, otherwise it's set to the empty string `''`.
+present, otherwise it's set to the empty string `''`.  PerplexiPy uses the
+`dotenv` module to load environment settings from `$PWD/.env` if present.
 """
-PERPLEXITY_API_KEY = os.environ.get('PERPLEXITY_API_KEY', default = '')
 PERPLEXITY_API_PREFIX = 'pplx-'
 PERPLEXITY_API_URL = 'https://api.perplexity.ai'
-"""
-The default model is **mistral-7b-instruct** because of it's efficiency and
-performance qualities.  Ref:  https://arxiv.org/abs/2310.06825
-"""
 PERPLEXITY_DEFAULT_MODEL = 'llama-3-sonar-small-32k-chat'
 PERPLEXITY_DEFAULT_ROLE = 'user'
 PERPLEXITY_TIMEOUT = 30.0 # seconds
@@ -98,7 +95,9 @@ class PerplexityClient:
         if not key:
             raise PerplexityClientError('Provide a valid key argument during instantiation')
         if not PERPLEXITY_API_PREFIX in key:
-            raise PerplexityClientError('The key %s i missing the pplx- prefix - invalid API key')
+            raise PerplexityClientError('The key %s is missing the pplx- prefix - invalid API key' % key)
+        if not all(ord(' ') <= ord(c) <= ord('~') for c in key):
+            raise PerplexityClientError('The key %s contains invalid characters' % key)
 
         self._endpoint = endpoint
         self._key = key
