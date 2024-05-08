@@ -40,6 +40,8 @@ def test_PerplexityClient():
         PerplexityClient('')
     with pytest.raises(PerplexityClientError):
         PerplexityClient('xxxx')
+    with pytest.raises(PerplexityClientError):
+        PerplexityClient(PERPLEXITY_API_KEY+'😊')
 
 
 def test_PerplexityClient_query(testClient):

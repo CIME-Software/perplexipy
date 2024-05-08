@@ -11,6 +11,7 @@ DEVPI_USER=$(shell cat ./devpi-user.txt)
 DIST=./dist
 MANPAGES=./manpages
 PACKAGE=$(shell cat package.txt)
+PERPLEXITY_API_KEY=$(shell cut -d "\"" -f 2 .env)
 REQUIREMENTS=requirements.txt
 VERSION=$(shell echo "from $(PACKAGE) import __VERSION__; print(__VERSION__)" | python)
 
@@ -48,7 +49,7 @@ devpi:
 docs: ALWAYS
 	mkdir -p $(API_DOC_DIR)
 	[[ -e ".env" ]] && mv ".env" "_env"
-	VERSION="$(VERSION)" pdoc --logo="https://images2.imgbox.com/57/94/AsI1WSfy_o.png" --favicon="https://cime.net/upload_area/favicon.ico" -n -o $(API_DOC_DIR) -t ./resources $(PACKAGE)
+	PERPLEXITY_API_KEY=$(PERPLEXITY_API_KEY) VERSION="$(VERSION)" PDOC_ALLOW_EXEC=1 pdoc --logo="https://images2.imgbox.com/57/94/AsI1WSfy_o.png" --favicon="https://cime.net/upload_area/favicon.ico" -n -o $(API_DOC_DIR) -t ./resources $(PACKAGE)
 	[[ -e "_env" ]] && mv "_env" ".env"
 
 
