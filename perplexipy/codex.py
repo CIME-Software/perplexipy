@@ -165,14 +165,30 @@ class CodexREPL:
 
         return session
 
-    def queryStyle(self, newStyle: str = None) -> bool:
+
+    @property
+    def queryCodeStyle(self) -> bool:
         """
-        Set the receiver query style to `newStyle`.  Code style queries generate
-        responses that include code snippets in Python or JavaScript, and URLs
-        to references that show how to address the query topic.  `human` style
-        queries produce textual, prose responses that address the query topic in
-        detail, and may or may not contain code, even if the query was about a
-        programming concept.
+        Return `True` if the current style is code, `False` for human.  The object uses
+        this Boolean value to determine the type of query to execute.  Future
+        versions may use the words `code` or `human`, or perhaps an enum with
+        those values.
+        """
+        return self._queryCodeStyle
+
+
+    @queryCodeStyle.setter
+    def queryCodeStyle(self, newStyle: str = None) -> bool:
+        """
+        Set the receiver query code style to `newStyle`.  Code style queries
+        generate responses that include code snippets in Python or JavaScript,
+        and URLs to references that show how to address the query topic.
+        `human` style queries produce textual, prose responses that address the
+        query topic in detail, and may or may not contain code, even if the
+        query was about a programming concept.
+
+        The method will default to `code` style for any value of `newStyle` that
+        isn't `code`.
 
         Arguments
         =========
@@ -189,13 +205,33 @@ class CodexREPL:
         if newStyle:
             self._queryCodeStyle = newStyle != 'human'
         click.secho('Coding query style = %s' % self._queryCodeStyle, fg = 'bright_blue')
-        return self._queryCodeStyle
 
-    def _makeQuery(self, userQuery: str) -> str:
+
+    def makeQuery(self, userQuery: str) -> str:
+        """
+        Execute a query using the `PerplexityClient` and return the result in
+        a string.
+
+        Arguments
+        =========
+            userQuery
+        A free from, natural language string describing the request to the AI
+        provider.
+
+        Returns
+        =======
+        The response from the AI/LLM.
+
+        Raises
+        ======
+        `ValueError` if `userQuery` is `None` or an empty string.
+        """
+        if not userQuery:
+            raise ValueError('userQuery string cannot be empty')
         if self._queryCodeStyle:
             userQuery = QUERY_DETAILED+userQuery
 
-        return codex.core(userQuery)
+        return self.core(userQuery)
 
 
     def _saveConfigTo(self, config: dict, fileName: str = CONFIG_FILE_NAME, pathName = CONFIG_PATH):

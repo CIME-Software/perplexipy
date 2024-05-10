@@ -7,7 +7,6 @@ from click.testing import CliRunner
 from perplexipy.codex import CodexREPL
 from perplexipy.codex import DEFAULT_MODEL_NAME
 from perplexipy.codex import _die # noqa: F401
-from perplexipy.codex import _displayModels
 from perplexipy.codex import codex
 from perplexipy.codex import codexCore
 from prompt_toolkit import PromptSession
@@ -137,13 +136,31 @@ def test_CodexREPL_editingMode(codexInstance):
     assert codexInstance._editingMode == editingMode
 
 
-@pytest.mark.skip("FAIL! Not implemented yet.")
-# @pytest.mark.xfail("fail! not implemented yet.")
 def test_CodexREPL_queryStyle(codexInstance):
-    pass
+    queryStyle = codexInstance.queryCodeStyle
+    newStyle = 'human' if queryStyle else 'code'
+    codexInstance.queryCodeStyle = newStyle
+    assert ('human' if not codexInstance.queryCodeStyle else 'code') == newStyle
+    codexInstance.queryCodeStyle = 'bogus'
+    assert codexInstance.queryCodeStyle
+    codexInstance.queryCodeStyle = queryStyle
+
+
+def test_CodexREPL_makeQuery(codexInstance):
+    result = codexInstance.makeQuery(TEST_QUERY)
+    assert result
+    assert isinstance(result, str)
+
+    with pytest.raises(ValueError):
+        assert not codexInstance.makeQuery('')
+    with pytest.raises(ValueError):
+        assert not codexInstance.makeQuery(None)
 
 
 # test_CodexREPL()
 # test_CodexRepl__loadConfigFrom(_codex, TEST_CONFIG_FILE_NAME, TEST_CONFIG_PATH)
 # test_CodexREPL_editingMode(_codex)
+# test_CodexREPL_queryStyle(_codex)
+# test_CodexREPL_makeQuery(_codex)
+
 
