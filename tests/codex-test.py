@@ -4,13 +4,14 @@
 from unittest.mock import patch
 
 from click.testing import CliRunner
+from perplexipy.codex import CodexREPL
 from perplexipy.codex import DEFAULT_MODEL_NAME
-from perplexipy.codex import _activeModel
-from perplexipy.codex import _die
+from perplexipy.codex import _die # noqa: F401
 from perplexipy.codex import _displayModels
-from perplexipy.codex import _loadConfigFrom
 from perplexipy.codex import codex
 from perplexipy.codex import codexCore
+from prompt_toolkit import PromptSession
+from prompt_toolkit.enums import EditingMode
 
 import os
 import pytest
@@ -22,15 +23,20 @@ TEST_CONFIG_PATH = tempfile.TemporaryDirectory().name
 TEST_CONFIG_FILE_NAME = os.path.join(TEST_CONFIG_PATH, 'codex-repl.yaml')
 
 
+# *** globals ***
+
+_codex = None # test_CodexREPL() initializes it
+
+
 # *** fixtures ***
 
 @pytest.fixture
-def _configFileName():
+def configFileName():
     return TEST_CONFIG_FILE_NAME
 
 
 @pytest.fixture
-def _configPath():
+def configPath():
     return TEST_CONFIG_PATH
 
 
@@ -39,11 +45,25 @@ def stdoutHide(monkeypatch):
     monkeypatch.setattr('sys.stdout', open('/dev/null', 'w'))
 
 
+@pytest.fixture
+def codexInstance():
+    if not _codex:
+        raise RuntimeError("test_CodexREPL() hasn't been executed!")
+
+    return _codex
+
+
 # *** tests ***
 
-@pytest.mark.skip('_die() works')
+@pytest.mark.skip("_die() doesn't require a unit test")
 def test__die():
     pass
+
+
+def test_CodexREPL():
+    global _codex
+
+    _codex = CodexREPL()
 
 
 def test_codexCore():
@@ -68,42 +88,62 @@ def test_codex(stdinMock):
     result = runner.invoke(codex, [ ])
 
 
-def test__loadConfigFrom(_configFileName, _configPath):
-    assert not os.path.exists(_configPath)
-    assert not os.path.exists(_configFileName)
-    config = _loadConfigFrom(_configFileName, _configPath)
-    assert os.path.exists(_configPath)
-    assert os.path.exists(_configFileName)
+def test_CodexRepl__loadConfigFrom(codexInstance, configFileName, configPath):
+    print(configPath)
+    bogusPath = tempfile.TemporaryDirectory().name
+    bogusFileName = os.path.join(bogusPath, 'codex-repl.yaml')
+    assert not os.path.exists(bogusPath)
+    assert not os.path.exists(bogusFileName)
+    config = codexInstance._loadConfigFrom(configFileName, configPath)
+    assert os.path.exists(configPath)
+    assert os.path.exists(configFileName)
     assert isinstance(config, dict)
     assert config['activeModel'] == DEFAULT_MODEL_NAME
-    assert config['activeModel'] in _displayModels()
+    assert config['activeModel'] in codexInstance.displayModels()
 
     # Config file already exists:
-    config = _loadConfigFrom(_configFileName, _configPath)
+    config = codexInstance._loadConfigFrom(configFileName, configPath)
     assert isinstance(config, dict)
 
 
-def test__displayModels():
-    models = _displayModels()
+def test_CodexREPL_displayModels(codexInstance):
+    models = codexInstance.displayModels()
     assert models
     assert isinstance(models, list)
     assert DEFAULT_MODEL_NAME in models
 
 
-def test__activateModel():
-    model = _activeModel()
+def test_CodexREPL_activateModel(codexInstance):
+    model = codexInstance.activeModel()
     assert model
     assert isinstance(model, str)
 
-    models = _displayModels()
+    models = codexInstance.displayModels()
 
     modelID = len(models)
-    model = _activeModel(modelID)
+    model = codexInstance.activeModel(modelID)
     assert models[modelID-1] == model
     modelID = 2
-    model = _activeModel(modelID)
+    model = codexInstance.activeModel(modelID)
     assert models[modelID-1] == model
 
 
-# test__activateModel()
+def test_CodexREPL_editingMode(codexInstance):
+    session = PromptSession()
+    editingMode = codexInstance._editingMode
+    session = codexInstance.editingMode(session, str(EditingMode.EMACS).replace('EditingMode.', ''))
+    assert codexInstance._editingMode == EditingMode.EMACS
+    session = codexInstance.editingMode(session, str(editingMode).replace('EditingMode.', ''))
+    assert codexInstance._editingMode == editingMode
+
+
+@pytest.mark.skip("FAIL! Not implemented yet.")
+# @pytest.mark.xfail("fail! not implemented yet.")
+def test_CodexREPL_queryStyle(codexInstance):
+    pass
+
+
+# test_CodexREPL()
+# test_CodexRepl__loadConfigFrom(_codex, TEST_CONFIG_FILE_NAME, TEST_CONFIG_PATH)
+# test_CodexREPL_editingMode(_codex)
 

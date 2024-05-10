@@ -79,6 +79,7 @@ class CodexREPL:
         self._client = PerplexityClient(key = os.environ['PERPLEXITY_API_KEY'])
         self._client.model = DEFAULT_MODEL_NAME
         self._queryCodeStyle = True
+        self._editingMode = EditingMode.VI
 
 
     def core(self, userQuery: str) -> str:
@@ -95,6 +96,7 @@ class CodexREPL:
         The result of the query, or `None` if the query was empty.
         """
         result = None
+        userQuery = userQuery.strip()
         if userQuery:
             if not self._client:
                 self._client = PerplexityClient(key = os.environ['PERPLEXITY_API_KEY'])
@@ -117,7 +119,7 @@ class CodexREPL:
 
 
 
-    def _displayModels(self) -> list:
+    def displayModels(self) -> list:
         """
         Display the list of models supported by the API.
 
@@ -125,7 +127,7 @@ class CodexREPL:
         =======
         A list of strings, each corresponding to a model name.
         """
-        _activeModel()
+        self.activeModel()
         print('Available models:\n')
         n = 1
         for model in self._client.models.keys():
@@ -136,18 +138,54 @@ class CodexREPL:
         return list(self._client.models.keys())
 
 
-    def editingMode(self, session: PromptSession, mode = None) -> PromptSession:
+    def editingMode(self, session: PromptSession, mode: str = None) -> PromptSession:
+        """
+        Sets the editing mode to `vi` or `emacs`.
+
+        Arguments
+        =========
+            session
+        An instance of `PromptSession` from the current Click hosting.
+
+            mode
+        A string with the values of 'vi' or 'emacs'; any other value is
+        overriden with `vi`.
+
+        Returns
+        =======
+        An updated PromptSession instance that with the value of `mode`.
+        """
         if mode:
             mode = mode.lower()
-            newEditingMode = EditingMode.EMACS if mode == 'emacs' else EditingMode.VI
-            session = PromptSession(editing_mode = newEditingMode)
+            self._editingMode = EditingMode.EMACS if mode == 'emacs' else EditingMode.VI
+            session = PromptSession(editing_mode = self._editingMode)
 
         editingMode = str(session.editing_mode).replace('EditingMode.', '').lower()
         click.secho('Editing mode = %s' % editingMode, fg = 'bright_blue')
 
         return session
 
-    def _queryStyle(self, newStyle: str = None) -> bool:
+    def queryStyle(self, newStyle: str = None) -> bool:
+        """
+        Set the receiver query style to `newStyle`.  Code style queries generate
+        responses that include code snippets in Python or JavaScript, and URLs
+        to references that show how to address the query topic.  `human` style
+        queries produce textual, prose responses that address the query topic in
+        detail, and may or may not contain code, even if the query was about a
+        programming concept.
+
+        Arguments
+        =========
+            `newStyle`
+        A string with either value of 'code' or 'human'.
+
+        Returns
+        =======
+        `True` if the current style is code, `False` for human.  The object uses
+        this Boolean value to determine the type of query to execute.  Future
+        versions may use the words `code` or `human`, or perhaps an enum with
+        those values.
+        """
         if newStyle:
             self._queryCodeStyle = newStyle != 'human'
         click.secho('Coding query style = %s' % self._queryCodeStyle, fg = 'bright_blue')
