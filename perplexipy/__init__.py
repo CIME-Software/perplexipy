@@ -255,15 +255,12 @@ class PerplexityClient:
         - `availability`
         """
         supportedModels = OrderedDict({
-            'codellama-70b-instruct': ModelInfo('70B', 16384, 'chat completion', 'open source',),
             'llama-3-70b-instruct': ModelInfo('70B', 8192, 'chat completion', 'open source'),
             'llama-3-8b-instruct': ModelInfo('8B', 8192, 'chat completion', 'open source'),
             'llama-3-sonar-large-32k-chat': ModelInfo('8x7B', 32768, 'chat completion', 'Perplexity',),
             'llama-3-sonar-large-32k-online': ModelInfo('8x7B', 32768, 'chat completion', 'Perplexity',),
             'llama-3-sonar-small-32k-chat': ModelInfo('7B', 32768, 'chat completion', 'Perplexity',),
             'llama-3-sonar-small-32k-online': ModelInfo('7B', 32768, 'chat completion', 'Perplexity',),
-            'mistral-7b-instruct': ModelInfo('7B', 16384, 'chat completion', 'open source',),
-            'mixtral-8x7b-instruct': ModelInfo('8x7B', 16384, 'chat completion', 'open source',),
         })
 
         return supportedModels

@@ -7,6 +7,7 @@ from prompt_toolkit import PromptSession
 from prompt_toolkit import print_formatted_text as printF
 from prompt_toolkit.enums import EditingMode
 
+from perplexipy import PERPLEXITY_DEFAULT_MODEL
 from perplexipy import PerplexityClient
 from perplexipy import __VERSION__
 
@@ -34,7 +35,11 @@ CONFIG_FILE_NAME = os.path.join(CONFIG_PATH, 'codex-repl.yaml')
 @private
 """
 
-DEFAULT_MODEL_NAME = 'mixtral-8x7b-instruct'
+DEFAULT_MODEL_NAME = PERPLEXITY_DEFAULT_MODEL
+"""
+@public
+Codex Playground default model.
+"""
 DEFAULT_VIM_EDIT_MODE = True
 """
 @private
@@ -79,6 +84,7 @@ class CodexREPL:
         self._client = PerplexityClient(key = os.environ['PERPLEXITY_API_KEY'])
         self._client.model = DEFAULT_MODEL_NAME
         self._queryCodeStyle = True
+        self._editingMode = EditingMode.VI
 
 
     def core(self, userQuery: str) -> str:
@@ -95,6 +101,7 @@ class CodexREPL:
         The result of the query, or `None` if the query was empty.
         """
         result = None
+        userQuery = userQuery.strip()
         if userQuery:
             if not self._client:
                 self._client = PerplexityClient(key = os.environ['PERPLEXITY_API_KEY'])
@@ -117,7 +124,7 @@ class CodexREPL:
 
 
 
-    def _displayModels(self) -> list:
+    def displayModels(self) -> list:
         """
         Display the list of models supported by the API.
 
@@ -125,7 +132,7 @@ class CodexREPL:
         =======
         A list of strings, each corresponding to a model name.
         """
-        _activeModel()
+        self.activeModel()
         print('Available models:\n')
         n = 1
         for model in self._client.models.keys():
@@ -136,28 +143,100 @@ class CodexREPL:
         return list(self._client.models.keys())
 
 
-    def editingMode(self, session: PromptSession, mode = None) -> PromptSession:
+    def editingMode(self, session: PromptSession, mode: str = None) -> PromptSession:
+        """
+        Sets the editing mode to `vi` or `emacs`.
+
+        Arguments
+        =========
+            session
+        An instance of `PromptSession` from the current Click hosting.
+
+            mode
+        A string with the values of 'vi' or 'emacs'; any other value is
+        overriden with `vi`.
+
+        Returns
+        =======
+        An updated PromptSession instance that with the value of `mode`.
+        """
         if mode:
             mode = mode.lower()
-            newEditingMode = EditingMode.EMACS if mode == 'emacs' else EditingMode.VI
-            session = PromptSession(editing_mode = newEditingMode)
+            self._editingMode = EditingMode.EMACS if mode == 'emacs' else EditingMode.VI
+            session = PromptSession(editing_mode = self._editingMode)
 
         editingMode = str(session.editing_mode).replace('EditingMode.', '').lower()
         click.secho('Editing mode = %s' % editingMode, fg = 'bright_blue')
 
         return session
 
-    def _queryStyle(self, newStyle: str = None) -> bool:
+
+    @property
+    def queryCodeStyle(self) -> bool:
+        """
+        Return `True` if the current style is code, `False` for human.  The object uses
+        this Boolean value to determine the type of query to execute.  Future
+        versions may use the words `code` or `human`, or perhaps an enum with
+        those values.
+        """
+        return self._queryCodeStyle
+
+
+    @queryCodeStyle.setter
+    def queryCodeStyle(self, newStyle: str = None) -> bool:
+        """
+        Set the receiver query code style to `newStyle`.  Code style queries
+        generate responses that include code snippets in Python or JavaScript,
+        and URLs to references that show how to address the query topic.
+        `human` style queries produce textual, prose responses that address the
+        query topic in detail, and may or may not contain code, even if the
+        query was about a programming concept.
+
+        The method will default to `code` style for any value of `newStyle` that
+        isn't `code`.
+
+        Arguments
+        =========
+            `newStyle`
+        A string with either value of 'code' or 'human'.
+
+        Returns
+        =======
+        `True` if the current style is code, `False` for human.  The object uses
+        this Boolean value to determine the type of query to execute.  Future
+        versions may use the words `code` or `human`, or perhaps an enum with
+        those values.
+        """
         if newStyle:
             self._queryCodeStyle = newStyle != 'human'
         click.secho('Coding query style = %s' % self._queryCodeStyle, fg = 'bright_blue')
-        return self._queryCodeStyle
 
-    def _makeQuery(self, userQuery: str) -> str:
+
+    def makeQuery(self, userQuery: str) -> str:
+        """
+        Execute a query using the `PerplexityClient` and return the result in
+        a string.
+
+        Arguments
+        =========
+            userQuery
+        A free from, natural language string describing the request to the AI
+        provider.
+
+        Returns
+        =======
+        The response from the AI/LLM.
+
+        Raises
+        ======
+        `ValueError` if `userQuery` is `None` or an empty string.
+        """
+        if not userQuery:
+            raise ValueError('userQuery string cannot be empty')
         if self._queryCodeStyle:
             userQuery = QUERY_DETAILED+userQuery
 
-        return codex.core(userQuery)
+        return self.core(userQuery)
 
 
     def _saveConfigTo(self, config: dict, fileName: str = CONFIG_FILE_NAME, pathName = CONFIG_PATH):
@@ -377,6 +456,8 @@ def _runREPL() -> str:
     _queryStyle('code' if config['queryCodeStyle'] else 'human')
     while True:
         userQuery = session.prompt('Ask anything (/exit to end): ')
+        if not userQuery:
+            continue
         if userQuery[0] in ('/', '?', ':'):
             parts = userQuery.split(' ')
             command = parts[0]
