@@ -7,6 +7,7 @@ from prompt_toolkit import PromptSession
 from prompt_toolkit import print_formatted_text as printF
 from prompt_toolkit.enums import EditingMode
 
+from perplexipy import PERPLEXITY_DEFAULT_MODEL
 from perplexipy import PerplexityClient
 from perplexipy import __VERSION__
 
@@ -34,7 +35,11 @@ CONFIG_FILE_NAME = os.path.join(CONFIG_PATH, 'codex-repl.yaml')
 @private
 """
 
-DEFAULT_MODEL_NAME = 'mixtral-8x7b-instruct'
+DEFAULT_MODEL_NAME = PERPLEXITY_DEFAULT_MODEL
+"""
+@public
+Codex Playground default model.
+"""
 DEFAULT_VIM_EDIT_MODE = True
 """
 @private
@@ -451,6 +456,8 @@ def _runREPL() -> str:
     _queryStyle('code' if config['queryCodeStyle'] else 'human')
     while True:
         userQuery = session.prompt('Ask anything (/exit to end): ')
+        if not userQuery:
+            continue
         if userQuery[0] in ('/', '?', ':'):
             parts = userQuery.split(' ')
             command = parts[0]
