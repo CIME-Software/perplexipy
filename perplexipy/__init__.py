@@ -40,7 +40,7 @@ present, otherwise it's set to the empty string `''`.  PerplexiPy uses the
 """
 PERPLEXITY_API_PREFIX = 'pplx-'
 PERPLEXITY_API_URL = 'https://api.perplexity.ai'
-PERPLEXITY_DEFAULT_MODEL = 'llama-3-sonar-small-32k-chat'
+PERPLEXITY_DEFAULT_MODEL = 'llama-3.1-70b-instruct'
 PERPLEXITY_DEFAULT_ROLE = 'user'
 PERPLEXITY_TIMEOUT = 30.0 # seconds
 PERPLEXITY_VALID_ROLES = { 'assistant', 'system', 'user', } # future proofing.
@@ -255,13 +255,13 @@ class PerplexityClient:
         - `availability`
         """
         supportedModels = OrderedDict({
-            'llama-3-70b-instruct': ModelInfo('70B', 8192, 'chat completion', 'open source'),
-            'llama-3-8b-instruct': ModelInfo('8B', 8192, 'chat completion', 'open source'),
-            'llama-3-sonar-large-32k-chat': ModelInfo('8x7B', 32768, 'chat completion', 'Perplexity',),
-            'llama-3-sonar-large-32k-online': ModelInfo('8x7B', 32768, 'chat completion', 'Perplexity',),
-            'llama-3-sonar-small-32k-chat': ModelInfo('7B', 32768, 'chat completion', 'Perplexity',),
-            'llama-3-sonar-small-32k-online': ModelInfo('7B', 32768, 'chat completion', 'Perplexity',),
-            'mixtral-8x7b-instruct': ModelInfo('8x7B', 16384, 'chat completion', 'open source'),
+            'llama-3.1-sonar-small-128k-online': ModelInfo('8B', 127072, 'Sonar', 'Perplexity',),
+            'llama-3.1-sonar-large-128k-online': ModelInfo('70B', 127072, 'Sonar', 'Perplexity',),
+            'llama-3.1-sonar-huge-128k-online': ModelInfo('405B', 127072, 'Sonar', 'PerplexiPy',),
+            'llama-3.1-sonar-small-128k-chat': ModelInfo('8B', 127072, 'Sonar', 'Perplexity',),
+            'llama-3.1-sonar-large-128k-chat': ModelInfo('70B', 127072, 'Sonar', 'Perplexity',),
+            'llama-3.1-8b-instruct': ModelInfo('8B', 131072, 'chat completion', 'open source',),
+            'llama-3.1-70b-instruct': ModelInfo('70b', 131072, 'chat completion', 'open source',),
         })
 
         return supportedModels
