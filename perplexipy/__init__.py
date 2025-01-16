@@ -40,17 +40,36 @@ present, otherwise it's set to the empty string `''`.  PerplexiPy uses the
 """
 PERPLEXITY_API_PREFIX = 'pplx-'
 PERPLEXITY_API_URL = 'https://api.perplexity.ai'
-PERPLEXITY_DEFAULT_MODEL = 'llama-3.1-70b-instruct'
+PERPLEXITY_DEFAULT_MODEL = 'llama-3.1-sonar-small-128k-online'
 PERPLEXITY_DEFAULT_ROLE = 'user'
 PERPLEXITY_TIMEOUT = 30.0 # seconds
 PERPLEXITY_VALID_ROLES = { 'assistant', 'system', 'user', } # future proofing.
 
 
+ModelInfo = namedtuple('ModelInfo', [
+    'parameterCount',
+    'contextLength',
+    'modelType',
+    'availability',
+])
 """
 Immutable dictionary-like object of a model's capabilities.  Use `_asDict()` if
 dictionary manipulation is required.
+
+Attributes
+----------
+    parameterCount
+The number of parameters in the model for capturing human language complexity.
+
+    contextLength
+Masimum number of words that the model can process in a single input.
+
+    modelType
+Model type reported by the underlying vendor.
+
+    availability
+Defaults to Perplexity.
 """
-ModelInfo = namedtuple('ModelInfo', [ 'parameterCount', 'contextLength', 'modelType', 'availability', ])
 
 
 class PerplexityClient:
@@ -258,10 +277,6 @@ class PerplexityClient:
             'llama-3.1-sonar-small-128k-online': ModelInfo('8B', 127072, 'Sonar', 'Perplexity',),
             'llama-3.1-sonar-large-128k-online': ModelInfo('70B', 127072, 'Sonar', 'Perplexity',),
             'llama-3.1-sonar-huge-128k-online': ModelInfo('405B', 127072, 'Sonar', 'PerplexiPy',),
-            'llama-3.1-sonar-small-128k-chat': ModelInfo('8B', 127072, 'Sonar', 'Perplexity',),
-            'llama-3.1-sonar-large-128k-chat': ModelInfo('70B', 127072, 'Sonar', 'Perplexity',),
-            'llama-3.1-8b-instruct': ModelInfo('8B', 131072, 'chat completion', 'open source',),
-            'llama-3.1-70b-instruct': ModelInfo('70b', 131072, 'chat completion', 'open source',),
         })
 
         return supportedModels
