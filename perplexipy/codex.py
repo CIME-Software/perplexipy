@@ -450,6 +450,11 @@ def _runREPL() -> str:
     """
     config = _loadConfigFrom()
     session = PromptSession()
+    model = config['activeModel']
+    if model not in _client.models.keys():
+        model = tuple(_client.models.keys())[0]
+        config['activeModel'] = model
+        _saveConfigTo(config)
     _activeModel(list(_client.models.keys()).index(config['activeModel'])+1)
     _REPLHello()
     session = _editingMode(session, config['editingMode'])
