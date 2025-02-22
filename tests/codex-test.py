@@ -157,10 +157,10 @@ def test_CodexREPL_makeQuery(codexInstance):
         assert not codexInstance.makeQuery(None)
 
 
-# test_CodexREPL()
-# test_CodexRepl__loadConfigFrom(_codex, TEST_CONFIG_FILE_NAME, TEST_CONFIG_PATH)
-# test_CodexREPL_editingMode(_codex)
-# test_CodexREPL_queryStyle(_codex)
-# test_CodexREPL_makeQuery(_codex)
+test_CodexREPL()
+test_CodexRepl__loadConfigFrom(_codex, TEST_CONFIG_FILE_NAME, TEST_CONFIG_PATH)
+test_CodexREPL_editingMode(_codex)
+test_CodexREPL_queryStyle(_codex)
+test_CodexREPL_makeQuery(_codex)
 
 

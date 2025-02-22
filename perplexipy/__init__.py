@@ -40,7 +40,7 @@ present, otherwise it's set to the empty string `''`.  PerplexiPy uses the
 """
 PERPLEXITY_API_PREFIX = 'pplx-'
 PERPLEXITY_API_URL = 'https://api.perplexity.ai'
-PERPLEXITY_DEFAULT_MODEL = 'llama-3.1-sonar-small-128k-online'
+PERPLEXITY_DEFAULT_MODEL = 'sonar'
 PERPLEXITY_DEFAULT_ROLE = 'user'
 PERPLEXITY_TIMEOUT = 30.0 # seconds
 PERPLEXITY_VALID_ROLES = { 'assistant', 'system', 'user', } # future proofing.
@@ -274,9 +274,11 @@ class PerplexityClient:
         - `availability`
         """
         supportedModels = OrderedDict({
-            'llama-3.1-sonar-small-128k-online': ModelInfo('8B', 127072, 'Sonar', 'Perplexity',),
-            'llama-3.1-sonar-large-128k-online': ModelInfo('70B', 127072, 'Sonar', 'Perplexity',),
-            'llama-3.1-sonar-huge-128k-online': ModelInfo('405B', 127072, 'Sonar', 'PerplexiPy',),
+            'sonar-reasoning-pro': ModelInfo('8B', 127072, 'Sonar', 'Perplexity',),
+            'sonar-reasoning': ModelInfo('8B', 127072, 'Sonar', 'Perplexity',),
+            'sonar-pro': ModelInfo('8B', 127072, 'Sonar', 'Perplexity',),
+            'sonar': ModelInfo('8B', 127072, 'Sonar', 'Perplexity',),
+            'r1-1776': ModelInfo('8B', 127072, 'Sonar', 'Perplexity',),
         })
 
         return supportedModels
