@@ -54,9 +54,18 @@ def codexInstance():
 
 # *** tests ***
 
-@pytest.mark.skip("_die() doesn't require a unit test")
-def test__die():
-    pass
+def test__dieCode1():
+    with patch('click.secho') as mockSecho, patch('sys.exit') as mockExit:
+        _die("Test message", 1)
+        mockSecho.assert_called_once_with("Test message\n", fg='white')
+        mockExit.assert_called_once_with(1)
+
+
+def test_dieExitCodeDefault():
+    with patch('click.secho') as mockSecho, patch('sys.exit') as mockExit:
+        _die("Test message")
+        mockSecho.assert_called_once_with("Test message\n", fg='bright_yellow')
+        mockExit.assert_called_once_with(99)
 
 
 def test_CodexREPL():
