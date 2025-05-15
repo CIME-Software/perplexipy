@@ -12,6 +12,7 @@ from perplexipy import PerplexityClient
 from perplexipy import __VERSION__
 
 import os
+import pathlib
 import select
 import sys
 
@@ -26,11 +27,11 @@ ARG_REPL = 'repl'
 @private
 """
 
-CONFIG_PATH = AppDirs(appname = 'PerplexiPy').user_config_dir
+CONFIG_PATH = libpath.Path(AppDirs(appname = 'PerplexiPy').user_config_dir)
 """
 @private
 """
-CONFIG_FILE_NAME = os.path.join(CONFIG_PATH, 'codex-repl.yaml')
+CONFIG_FILE_NAME = CONFIG_PATH / 'codex-repl.yaml'
 """
 @private
 """
@@ -41,6 +42,11 @@ DEFAULT_MODEL_NAME = PERPLEXITY_DEFAULT_MODEL
 Codex Playground default model.
 """
 DEFAULT_VIM_EDIT_MODE = True
+"""
+@private
+"""
+
+HISTORY_FILE_NAME = CONFIG_PATH / 'history'
 """
 @private
 """
