@@ -1,5 +1,12 @@
 # See: https://github.com/CIME-Software/perplexipy/blob/master/LICENSE.txt
+"""
+.. include:: ../README.md
 
+---
+
+# PerplexiPy API Documentation
+
+"""
 
 from collections import OrderedDict
 
@@ -7,15 +14,6 @@ import importlib.metadata
 
 
 __VERSION__ = importlib.metadata.version('PerplexiPy')
-
-
-"""
-.. include:: ../README.md
-
----
-
-# PerplexiPy API Documentation
-"""
 
 
 from collections import namedtuple
@@ -30,6 +28,8 @@ load_dotenv()
 
 import os
 
+
+# +++ constants +++
 
 _CLAUDE_MODEL = 'claude-3-haiku'
 PERPLEXITY_API_KEY = os.environ.get('PERPLEXITY_API_KEY', default = '')
